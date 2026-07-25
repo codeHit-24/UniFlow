@@ -4,6 +4,7 @@ import com.hitanshi.uniflow.dto.EnrollmentRequest;
 import com.hitanshi.uniflow.entity.Course;
 import com.hitanshi.uniflow.entity.Enrollment;
 import com.hitanshi.uniflow.entity.Student;
+import com.hitanshi.uniflow.exception.ResourceNotFoundException;
 import com.hitanshi.uniflow.repository.CourseRepository;
 import com.hitanshi.uniflow.repository.EnrollmentRepository;
 import com.hitanshi.uniflow.repository.StudentRepository;
@@ -29,8 +30,16 @@ public class EnrollmentService {
     public Enrollment saveEnrollment(EnrollmentRequest request){
 
         Enrollment enrollment = new Enrollment();
-        Student std = studentRepository.findById(request.getStudentId()).orElseThrow(() -> new RuntimeException("Student not found"));
-        Course course = courseRepository.findById(request.getCourseId()).orElseThrow(() -> new RuntimeException("Course not found"));
+        Student std = studentRepository.findById(request.getStudentId()).orElseThrow(() -> new ResourceNotFoundException(
+                "Student with id "
+                        + request.getStudentId()
+                        + " not found"
+        ));
+        Course course = courseRepository.findById(request.getCourseId()).orElseThrow(() -> new ResourceNotFoundException(
+                "Course with id "
+                        + request.getCourseId()
+                        + " not found"
+        ));
         enrollment.setEnrollmentDate(request.getEnrollmentDate());
         enrollment.setStudent(std);
         enrollment.setCourse(course);
@@ -40,6 +49,12 @@ public class EnrollmentService {
     }
     public List<Enrollment> getAllEnrollments() {
         return enrollmentRepository.findAll();
+    }
+
+    public Enrollment getEnrollmentById(Long id){
+        return enrollmentRepository.findById(id).orElseThrow(() ->  new ResourceNotFoundException(
+                "Enrollments with id " + id + " not found"
+        ));
     }
 
 }

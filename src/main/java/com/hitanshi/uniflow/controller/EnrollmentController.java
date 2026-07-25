@@ -25,4 +25,9 @@ public class EnrollmentController {
     public List<Enrollment> getEnrollments(){
         return enrollmentService.getAllEnrollments();
     }
+
+    @GetMapping("/{id}")
+    public Enrollment getEnrollmentById(@PathVariable Long id){
+        return enrollmentService.getEnrollmentById(id);
+    }
 }

@@ -1,6 +1,7 @@
 package com.hitanshi.uniflow.service;
 
 import com.hitanshi.uniflow.entity.Student;
+import com.hitanshi.uniflow.exception.ResourceNotFoundException;
 import com.hitanshi.uniflow.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,13 @@ public class StudentService {
 
     public List<Student> getStudents(){
         return studentRepository.findAll();
+    }
+
+    public Student getStudentById(Long id){
+        return studentRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException(
+                        "Student with id " + id + " not found"
+                )
+        );
     }
 }
