@@ -1,5 +1,6 @@
 package com.hitanshi.uniflow.controller;
 
+import com.hitanshi.uniflow.dto.StudentResponseDTO;
 import com.hitanshi.uniflow.entity.Student;
 import com.hitanshi.uniflow.service.StudentService;
 import jakarta.validation.Valid;
@@ -21,7 +22,7 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getStudents(){
+    public List<StudentResponseDTO> getStudents(){
         return studentService.getStudents();
     }
 

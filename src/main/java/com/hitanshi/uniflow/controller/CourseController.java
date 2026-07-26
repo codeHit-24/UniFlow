@@ -1,6 +1,7 @@
 package com.hitanshi.uniflow.controller;
 
 
+import com.hitanshi.uniflow.dto.CourseResponseDTO;
 import com.hitanshi.uniflow.entity.Course;
 import com.hitanshi.uniflow.repository.CourseRepository;
 import com.hitanshi.uniflow.service.CourseService;
@@ -25,7 +26,7 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<Course> getCourses(){
+    public List<CourseResponseDTO> getCourses(){
         return courseService.getCourses();
     }
 

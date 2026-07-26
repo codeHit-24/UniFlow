@@ -1,5 +1,6 @@
 package com.hitanshi.uniflow.service;
 
+import com.hitanshi.uniflow.dto.CourseResponseDTO;
 import com.hitanshi.uniflow.entity.Course;
 import com.hitanshi.uniflow.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,11 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    public List<Course> getCourses(){
-        return courseRepository.findAll();
+    public List<CourseResponseDTO> getCourses(){
+        return courseRepository.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .toList();
     }
 
     public Course getCourseById(Long id){
@@ -36,5 +40,16 @@ public class CourseService {
             status = false;
         }
         return status;
+    }
+
+    private CourseResponseDTO convertToDTO(Course course){
+
+        return new CourseResponseDTO(
+                course.getId(),
+                course.getCourseName(),
+                course.getCourseCode(),
+                course.getCredits(),
+                course.getDepartment()
+        );
     }
 }

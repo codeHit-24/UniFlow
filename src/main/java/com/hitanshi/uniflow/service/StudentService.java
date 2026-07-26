@@ -1,5 +1,6 @@
 package com.hitanshi.uniflow.service;
 
+import com.hitanshi.uniflow.dto.StudentResponseDTO;
 import com.hitanshi.uniflow.entity.Student;
 import com.hitanshi.uniflow.exception.ResourceNotFoundException;
 import com.hitanshi.uniflow.repository.StudentRepository;
@@ -18,8 +19,12 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public List<Student> getStudents(){
-        return studentRepository.findAll();
+    public List<StudentResponseDTO> getStudents(){
+
+            return studentRepository.findAll()
+                    .stream()
+                    .map(this::convertToDTO)
+                    .toList();
     }
 
     public Student getStudentById(Long id){
@@ -27,6 +32,18 @@ public class StudentService {
                 new ResourceNotFoundException(
                         "Student with id " + id + " not found"
                 )
+        );
+    }
+
+    private StudentResponseDTO convertToDTO(Student student){
+
+        return new StudentResponseDTO(
+                student.getId(),
+                student.getFirstName(),
+                student.getLastName(),
+                student.getEmail(),
+                student.getDepartment(),
+                student.getSemester()
         );
     }
 }
