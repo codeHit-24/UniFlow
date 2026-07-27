@@ -48,7 +48,11 @@ public class Student {
     private int semester;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "student")
+    @OneToMany(
+            mappedBy = "student",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<Enrollment> enrollments;
 
 }

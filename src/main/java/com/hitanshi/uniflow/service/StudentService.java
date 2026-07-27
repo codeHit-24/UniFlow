@@ -35,6 +35,56 @@ public class StudentService {
         );
     }
 
+    public void deleteStudent(Long id){
+
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Student with id "
+                                        + id
+                                        + " not found"
+                        )
+                );
+
+        studentRepository.delete(student);
+    }
+
+    public Student updateStudent(Long id, Student updatedStudent){
+
+        Student existingStudent = studentRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Student with id "
+                                        + id
+                                        + " not found"
+                        )
+                );
+
+
+        existingStudent.setFirstName(
+                updatedStudent.getFirstName()
+        );
+
+        existingStudent.setLastName(
+                updatedStudent.getLastName()
+        );
+
+        existingStudent.setEmail(
+                updatedStudent.getEmail()
+        );
+
+        existingStudent.setDepartment(
+                updatedStudent.getDepartment()
+        );
+
+        existingStudent.setSemester(
+                updatedStudent.getSemester()
+        );
+
+
+        return studentRepository.save(existingStudent);
+    }
+
     private StudentResponseDTO convertToDTO(Student student){
 
         return new StudentResponseDTO(

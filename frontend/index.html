@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>UniFlow ERP</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<h1>
+    UniFlow ERP
+</h1>
+
+
+<h2>
+    Student Management
+</h2>
+
+<h2>Add Student</h2>
+
+<div id="message"></div>
+
+<input id="firstName" placeholder="First Name">
+
+<input id="lastName" placeholder="Last Name">
+
+<input id="email" placeholder="Email">
+
+<input id="department" placeholder="Department">
+
+<input id="semester" placeholder="Semester">
+
+<button onclick="saveStudent()">
+    Save Student
+</button>
+
+<table>
+
+    <thead>
+
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Department</th>
+        <th>Semester</th>
+        <th>Action</th>
+    </tr>
+
+    </thead>
+
+
+    <tbody id="studentTable">
+
+    </tbody>
+
+
+</table>
+
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
