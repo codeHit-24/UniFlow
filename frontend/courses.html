@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>UniFlow ERP - Courses</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<h1>UniFlow ERP</h1>
+
+<h2>Course Management</h2>
+
+<h2>Add Course</h2>
+
+<div id="message"></div>
+
+<input id="courseName" placeholder="Course Name">
+
+<input id="courseCode" placeholder="Course Code">
+
+<input id="credits" placeholder="Credits">
+
+<input id="department" placeholder="Department">
+
+<button onclick="saveCourse()">
+    Save Course
+</button>
+
+<table>
+
+    <thead>
+
+    <tr>
+
+        <th>ID</th>
+
+        <th>Course Name</th>
+
+        <th>Course Code</th>
+
+        <th>Credits</th>
+
+        <th>Department</th>
+
+        <th>Action</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody id="courseTable">
+
+    </tbody>
+
+
+</table>
+
+
+<script src="course.js"></script>
+
+
+</body>
+
+</html>

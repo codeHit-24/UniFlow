@@ -2,6 +2,8 @@ package com.hitanshi.uniflow.service;
 
 import com.hitanshi.uniflow.dto.CourseResponseDTO;
 import com.hitanshi.uniflow.entity.Course;
+import com.hitanshi.uniflow.entity.Student;
+import com.hitanshi.uniflow.exception.ResourceNotFoundException;
 import com.hitanshi.uniflow.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,5 +53,37 @@ public class CourseService {
                 course.getCredits(),
                 course.getDepartment()
         );
+    }
+
+    public Course updateCourse(Long id, Course updatedCourse){
+
+        Course existingCourse = courseRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Course with id "
+                                        + id
+                                        + " not found"
+                        )
+                );
+
+
+        existingCourse.setCourseName(
+                updatedCourse.getCourseName()
+        );
+
+        existingCourse.setCourseCode(
+                updatedCourse.getCourseCode()
+        );
+
+        existingCourse.setDepartment(
+                updatedCourse.getDepartment()
+        );
+
+        existingCourse.setCredits(
+                updatedCourse.getCredits()
+        );
+
+
+        return courseRepository.save(existingCourse);
     }
 }
