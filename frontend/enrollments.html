@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>UniFlow ERP - Enrollments</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<h1>UniFlow ERP</h1>
+
+<h2>Enrollment Management</h2>
+
+<h2>Add Enrollment</h2>
+
+<div id="message"></div>
+
+<select id="studentSelect">
+    <option value="">Select Student</option>
+</select>
+
+<select id="courseSelect">
+    <option value="">Select Course</option>
+</select>
+
+<input
+        type="date"
+        id="enrollmentDate">
+
+<button onclick="addEnrollment()">
+    Enroll Student
+</button>
+
+<table>
+
+    <thead>
+
+    <tr>
+
+        <th>ID</th>
+
+        <th>Student</th>
+
+        <th>Course</th>
+
+        <th>Date</th>
+
+        <th>Action</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody id="enrollmentTable">
+
+    </tbody>
+
+
+</table>
+
+
+<script src="enrollment.js"></script>
+
+
+</body>
+
+</html>

@@ -57,4 +57,14 @@ public class EnrollmentService {
         ));
     }
 
+    public void deleteEnrollment(Long id){
+
+        Enrollment enrollment = enrollmentRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Enrollment with id " + id + " not found"));
+
+        enrollmentRepository.delete(enrollment);
+    }
+
 }

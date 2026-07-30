@@ -30,4 +30,9 @@ public class EnrollmentController {
     public Enrollment getEnrollmentById(@PathVariable Long id){
         return enrollmentService.getEnrollmentById(id);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteEnrollment(@PathVariable Long id){
+        enrollmentService.deleteEnrollment(id);
+    }
 }
