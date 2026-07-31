@@ -33,13 +33,18 @@ function loadCourses(){
 
             <td>
 
+            <div class="action-buttons">
+
             <button onclick="editCourse(${course.id})">
-            Edit
+                Edit
             </button>
 
-            <button onclick="deleteCourse(${course.id})">
-            Delete
+            <button class="delete-btn"
+            onclick="deleteCourse(${course.id})">
+                Delete
             </button>
+
+            </div>
 
             </td>
 

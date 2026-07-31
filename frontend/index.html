@@ -13,32 +13,58 @@
 <body>
 
 
-<h1>
+<h1 class="page-title" style="text-align:center;">
     UniFlow ERP
 </h1>
 
 
-<h2>
+<h2 class="page-title">
     Student Management
 </h2>
 
-<h2>Add Student</h2>
+<nav>
+
+    <a href="dashboard.html">Dashboard</a>
+
+    <a href="index.html">Students</a>
+
+    <a href="courses.html">Courses</a>
+
+    <a href="enrollments.html">Enrollments</a>
+
+</nav>
 
 <div id="message"></div>
 
-<input id="firstName" placeholder="First Name">
+<div class="form-container">
 
-<input id="lastName" placeholder="Last Name">
+    <h2 class="page-title">Add Student</h2>
 
-<input id="email" placeholder="Email">
+    <input id="firstName" placeholder="First Name">
 
-<input id="department" placeholder="Department">
+    <input id="lastName" placeholder="Last Name">
 
-<input id="semester" placeholder="Semester">
+    <input id="email" placeholder="Email">
 
-<button onclick="saveStudent()">
-    Save Student
-</button>
+    <input id="department" placeholder="Department">
+
+    <input id="semester" placeholder="Semester">
+
+    <button onclick="saveStudent()">
+        Save Student
+    </button>
+
+</div>
+
+<div class="search-container">
+
+    <input
+            type="text"
+            id="searchInput"
+            placeholder="Search by name..."
+            onkeyup="searchStudent()">
+
+</div>
 
 <table>
 
@@ -66,6 +92,7 @@
 
 <script src="script.js"></script>
 
+<div id="toast"></div>
 
 </body>
 

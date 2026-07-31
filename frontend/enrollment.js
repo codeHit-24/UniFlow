@@ -159,7 +159,7 @@ function loadEnrollments(){
                 </td>
 
                 <td>
-                    <button onclick="deleteEnrollment(${enrollment.id})">
+                    <button class="delete-btn" onclick="deleteEnrollment(${enrollment.id})">
                         Delete
                     </button>
                 </td>

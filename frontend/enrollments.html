@@ -13,13 +13,26 @@
 <body>
 
 
-<h1>UniFlow ERP</h1>
+<h1 class="page-title">UniFlow ERP</h1>
 
-<h2>Enrollment Management</h2>
+<h2 class="page-title">Enrollment Management</h2>
 
-<h2>Add Enrollment</h2>
+<nav>
+
+    <a href="dashboard.html">Dashboard</a>
+
+    <a href="index.html">Students</a>
+
+    <a href="courses.html">Courses</a>
+
+    <a href="enrollments.html">Enrollments</a>
+
+</nav>
 
 <div id="message"></div>
+
+<div class="form-container">
+<h2 class="page-title">Add Enrollment</h2>
 
 <select id="studentSelect">
     <option value="">Select Student</option>
@@ -36,6 +49,7 @@
 <button onclick="addEnrollment()">
     Enroll Student
 </button>
+</div>
 
 <table>
 
@@ -67,6 +81,7 @@
 
 <script src="enrollment.js"></script>
 
+<div id="toast"></div>
 
 </body>
 

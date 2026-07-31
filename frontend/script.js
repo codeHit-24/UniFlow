@@ -2,62 +2,18 @@ const API_URL = "http://localhost:8080/Students";
 
 let selectedStudentId = null;
 
-function loadStudents(){
-fetch(API_URL)
+let students = [];
 
-.then(response => response.json())
+async function loadStudents() {
 
-.then(students => {
+    const response = await fetch(API_URL);
 
+    const data = await response.json();
 
-    let table = document.getElementById(
-        "studentTable"
-    );
+    students = data;
 
-    table.innerHTML = "";
+    displayStudents(data);
 
-    students.forEach(student => {
-
-
-        let row = `
-
-        <tr>
-
-        <td>${student.id}</td>
-
-        <td>
-        ${student.firstName}
-        ${student.lastName}
-        </td>
-
-        <td>${student.email}</td>
-
-        <td>${student.department}</td>
-
-        <td>${student.semester}</td>
-
-        <td>
-        <button onclick="editStudent(${student.id})">
-        Edit
-        </button>
-
-        <button onclick="deleteStudent(${student.id})">
-        Delete
-        </button>
-        </td>
-
-        </tr>
-
-        `;
-
-
-        table.innerHTML += row;
-
-
-    });
-
-
-});
 }
 
 function addStudent(){
@@ -148,7 +104,7 @@ function deleteStudent(id){
 
         if(response.ok){
 
-            showMessage("Student deleted successfully");
+            showMessage("Student deleted successfully", "#dc3545");
 
             loadStudents();
 
@@ -299,18 +255,92 @@ function clearForm(){
 
 }
 
-function showMessage(message){
+function showMessage(message, color = "#16a34a") {
 
     let box = document.getElementById("message");
 
     box.innerHTML = message;
 
+    box.style.background = color;
 
-    setTimeout(()=>{
+    box.style.opacity = "1";
 
-        box.innerHTML="";
+    setTimeout(() => {
 
-    },3000);
+        box.style.opacity = "0";
+
+    }, 2500);
+
+}
+
+function displayStudents(studentList) {
+
+    let table = document.getElementById("studentTable");
+
+    table.innerHTML = "";
+
+    studentList.forEach(student => {
+
+        let row = `
+
+        <tr>
+
+            <td>${student.id}</td>
+
+            <td>
+                ${student.firstName}
+                ${student.lastName}
+            </td>
+
+            <td>${student.email}</td>
+
+            <td>${student.department}</td>
+
+            <td>${student.semester}</td>
+
+            <td>
+
+                <div class="action-buttons">
+
+                    <button onclick="editStudent(${student.id})">
+                        Edit
+                    </button>
+
+                    <button class="delete-btn"
+                        onclick="deleteStudent(${student.id})">
+                        Delete
+                    </button>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+        `;
+
+        table.innerHTML += row;
+
+    });
+
+}
+
+function searchStudent() {
+
+    const keyword = document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    const filtered = students.filter(student =>
+
+        (student.firstName + " " + student.lastName)
+            .toLowerCase()
+            .includes(keyword)
+
+    );
+
+    displayStudents(filtered);
 
 }
 
