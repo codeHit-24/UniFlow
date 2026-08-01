@@ -18,25 +18,62 @@ async function loadStudents() {
 
 function addStudent(){
 
+    const firstName = document.getElementById("firstName").value.trim();
+    const lastName = document.getElementById("lastName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const department = document.getElementById("department").value.trim();
+    const semester = document.getElementById("semester").value.trim();
+
+    if(
+        !firstName ||
+        !lastName ||
+        !email ||
+        !department ||
+        !semester
+    ){
+
+        showMessage("Please fill all fields", "#dc3545");
+
+        return;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!emailPattern.test(email)){
+
+        showMessage("Invalid email address","#dc3545");
+
+        return;
+
+    }
+
+    if(semester < 1 || semester > 8){
+
+        showMessage("Semester must be between 1 and 8","#dc3545");
+
+        return;
+
+    }
+
     const student = {
 
-        firstName:
-        document.getElementById("firstName").value,
+        firstName,
 
-        lastName:
-        document.getElementById("lastName").value,
+        lastName,
 
-        email:
-        document.getElementById("email").value,
+        email,
 
-        department:
-        document.getElementById("department").value,
+        department,
 
-        semester:
-        document.getElementById("semester").value
+        semester
 
     };
 
+    const saveBtn = document.getElementById("saveBtn");
+
+    saveBtn.disabled = true;
+
+    saveBtn.innerHTML = "Saving...";
 
     fetch("http://localhost:8080/Students", {
 
@@ -60,10 +97,18 @@ function addStudent(){
 
             loadStudents();
 
+            saveBtn.disabled = false;
+
+            saveBtn.innerHTML = "Add Student";
+
         }
         else{
 
             showMessage("Failed to add student");
+
+            saveBtn.disabled = false;
+
+            saveBtn.innerHTML = "Add Student";
 
         }
 
@@ -74,6 +119,10 @@ function addStudent(){
         console.log(error);
 
         showMessage("Server error");
+
+        saveBtn.disabled = false;
+
+        saveBtn.innerHTML = "Add Student";
 
     });
 
@@ -199,6 +248,12 @@ function updateStudent(){
 
     };
 
+    const saveBtn = document.getElementById("saveBtn");
+
+    saveBtn.disabled = true;
+
+    saveBtn.innerHTML = "Updating...";
+
 
     fetch(
         `http://localhost:8080/Students/${selectedStudentId}`,
@@ -224,10 +279,18 @@ function updateStudent(){
 
             loadStudents();
 
+            saveBtn.disabled = false;
+
+            saveBtn.innerHTML = "Save Student";
+
         }
         else{
 
             showMessage("Failed to update student");
+
+            saveBtn.disabled = false;
+
+            saveBtn.innerHTML = "Save Student";
 
         }
 
@@ -238,6 +301,10 @@ function updateStudent(){
         console.log(error);
 
         showMessage("Server error");
+
+        saveBtn.disabled = false;
+
+        saveBtn.innerHTML = "Save Student";
 
     });
 
