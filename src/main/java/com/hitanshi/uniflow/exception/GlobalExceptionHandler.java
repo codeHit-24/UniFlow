@@ -2,6 +2,7 @@ package com.hitanshi.uniflow.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -57,5 +58,19 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<?> handleInvalidCredentials(
+            InvalidCredentialsException ex) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("status", 401);
+        response.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.UNAUTHORIZED
+        );
+    }
 
 }
