@@ -7,64 +7,121 @@ const STUDENT_API =
 const COURSE_API =
 "http://localhost:8080/Courses";
 
-function loadStudents(){
+const token = localStorage.getItem("token");
 
-    fetch(STUDENT_API)
+if (!token) {
 
-    .then(response => response.json())
-
-    .then(students => {
-
-        let dropdown =
-        document.getElementById("studentSelect");
-
-        dropdown.innerHTML =
-        '<option value="">Select Student</option>';
-
-        students.forEach(student => {
-
-            dropdown.innerHTML +=
-
-            `<option value="${student.id}">
-
-            ${student.firstName}
-            ${student.lastName}
-
-            </option>`;
-
-        });
-
-    });
+    window.location.href = "login.html";
 
 }
 
-function loadCourses(){
+function getHeaders() {
 
-    fetch(COURSE_API)
+    const token = localStorage.getItem("token");
 
-    .then(response => response.json())
+    return {
 
-    .then(courses => {
+        "Content-Type": "application/json",
 
-        let dropdown =
-        document.getElementById("courseSelect");
+        "Authorization": `Bearer ${token}`
 
-        dropdown.innerHTML =
-        '<option value="">Select Course</option>';
+    };
 
-        courses.forEach(course => {
+}
 
-            dropdown.innerHTML +=
+async function loadStudents() {
 
-            `<option value="${course.id}">
+    try {
 
-                ${course.courseName}
+        const response = await fetch(STUDENT_API, {
 
-            </option>`;
+            headers: getHeaders()
 
         });
 
-    });
+        if (!response.ok) {
+
+            showMessage("Failed to load students");
+
+            return;
+
+        }
+
+        const students = await response.json();
+
+        let dropdown = document.getElementById("studentSelect");
+
+        dropdown.innerHTML =
+            '<option value="">Select Student</option>';
+
+        students.forEach(student => {
+
+            dropdown.innerHTML += `
+
+                <option value="${student.id}">
+                    ${student.firstName} ${student.lastName}
+                </option>
+
+            `;
+
+        });
+
+    }
+    catch (error) {
+
+        console.log(error);
+
+        showMessage("Server Error");
+
+    }
+
+}
+
+async function loadCourses() {
+
+    try {
+
+        const response = await fetch(COURSE_API, {
+
+            headers: getHeaders()
+
+        });
+
+        if (!response.ok) {
+
+            showMessage("Failed to load courses");
+
+            return;
+
+        }
+
+        const courses = await response.json();
+
+        let dropdown = document.getElementById("courseSelect");
+
+        dropdown.innerHTML =
+            '<option value="">Select Course</option>';
+
+        courses.forEach(course => {
+
+            dropdown.innerHTML += `
+
+                <option value="${course.id}">
+                    ${course.courseName}
+                </option>
+
+            `;
+
+        });
+
+    }
+    catch (error) {
+
+        console.log(error);
+
+        showMessage("Server Error");
+
+    }
 
 }
 
@@ -87,9 +144,7 @@ function addEnrollment(){
 
         method:"POST",
 
-        headers:{
-            "Content-Type":"application/json"
-        },
+        headers: getHeaders(),
 
         body:JSON.stringify(enrollment)
 
@@ -124,16 +179,37 @@ function addEnrollment(){
 
 }
 
-function loadEnrollments(){
+async function loadEnrollments() {
 
-    fetch(ENROLLMENT_API)
+    try {
 
-    .then(response => response.json())
+        const response = await fetch(ENROLLMENT_API, {
 
-    .then(enrollments => {
+            headers: getHeaders()
 
-        let table =
-        document.getElementById("enrollmentTable");
+        });
+
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+
+            window.location.href = "login.html";
+
+            return;
+
+        }
+
+        if (!response.ok) {
+
+            showMessage("Failed to load enrollments");
+
+            return;
+
+        }
+
+        const enrollments = await response.json();
+
+        let table = document.getElementById("enrollmentTable");
 
         table.innerHTML = "";
 
@@ -159,7 +235,8 @@ function loadEnrollments(){
                 </td>
 
                 <td>
-                    <button class="delete-btn" onclick="deleteEnrollment(${enrollment.id})">
+                    <button class="delete-btn"
+                        onclick="deleteEnrollment(${enrollment.id})">
                         Delete
                     </button>
                 </td>
@@ -170,7 +247,14 @@ function loadEnrollments(){
 
         });
 
-    });
+    }
+    catch (error) {
+
+        console.log(error);
+
+        showMessage("Server Error");
+
+    }
 
 }
 
@@ -182,7 +266,9 @@ function deleteEnrollment(id){
 
     fetch(`${ENROLLMENT_API}/${id}`,{
 
-        method:"DELETE"
+        method:"DELETE",
+
+        headers: getHeaders()
 
     })
 

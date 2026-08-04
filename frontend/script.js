@@ -4,9 +4,45 @@ let selectedStudentId = null;
 
 let students = [];
 
+const token = localStorage.getItem("token");
+
+if (!token) {
+
+    window.location.href = "login.html";
+
+}
+
+function getHeaders() {
+
+    const token = localStorage.getItem("token");
+
+    return {
+
+        "Content-Type": "application/json",
+
+        "Authorization": `Bearer ${token}`
+
+    };
+
+}
+
 async function loadStudents() {
 
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL, {
+
+        headers: getHeaders()
+
+    });
+
+    if (response.status === 401) {
+
+        localStorage.removeItem("token");
+
+        window.location.href = "login.html";
+
+        return;
+
+    }
 
     const data = await response.json();
 
@@ -79,9 +115,7 @@ function addStudent(){
 
         method:"POST",
 
-        headers:{
-            "Content-Type":"application/json"
-        },
+        headers: getHeaders(),
 
         body:JSON.stringify(student)
 
@@ -140,9 +174,11 @@ function deleteStudent(id){
     }
 
 
-    fetch(`http://localhost:8080/Students/${id}`, {
+    fetch(`http://localhost:8080/Students/${id}`,{
 
-        method:"DELETE"
+        method:"DELETE",
+
+        headers: getHeaders()
 
     })
 
@@ -178,7 +214,11 @@ function deleteStudent(id){
 
 function editStudent(id){
 
-    fetch(`http://localhost:8080/Students/${id}`)
+    fetch(`http://localhost:8080/Students/${id}`, {
+
+        headers: getHeaders()
+
+    })
 
     .then(response => response.json())
 
@@ -261,9 +301,7 @@ function updateStudent(){
 
         method:"PUT",
 
-        headers:{
-            "Content-Type":"application/json"
-        },
+        headers: getHeaders(),
 
         body:JSON.stringify(student)
 
@@ -408,6 +446,14 @@ function searchStudent() {
     );
 
     displayStudents(filtered);
+
+}
+
+function logout() {
+
+    localStorage.removeItem("token");
+
+    window.location.href = "login.html";
 
 }
 

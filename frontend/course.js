@@ -2,61 +2,111 @@ const API_URL = "http://localhost:8080/Courses";
 
 let selectedCourseId = null;
 
-function loadCourses(){
+const token = localStorage.getItem("token");
 
-    fetch(API_URL)
+if (!token) {
 
-    .then(response => response.json())
+    window.location.href = "login.html";
 
-    .then(courses => {
+}
 
-        let table =
-        document.getElementById("courseTable");
+function getHeaders() {
 
-        table.innerHTML="";
+    const token = localStorage.getItem("token");
 
-        courses.forEach(course=>{
+    return {
 
-            let row=`
+        "Content-Type": "application/json",
+
+        "Authorization": `Bearer ${token}`
+
+    };
+
+}
+
+async function loadCourses() {
+
+    try {
+
+        const response = await fetch(API_URL, {
+
+            headers: getHeaders()
+
+        });
+
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+
+            window.location.href = "login.html";
+
+            return;
+
+        }
+
+        if (!response.ok) {
+
+            showMessage("Failed to load courses");
+
+            return;
+
+        }
+
+        const courses = await response.json();
+
+        let table = document.getElementById("courseTable");
+
+        table.innerHTML = "";
+
+        courses.forEach(course => {
+
+            let row = `
 
             <tr>
 
-            <td>${course.id}</td>
+                <td>${course.id}</td>
 
-            <td>${course.courseName}</td>
+                <td>${course.courseName}</td>
 
-            <td>${course.courseCode}</td>
+                <td>${course.courseCode}</td>
 
-            <td>${course.credits}</td>
+                <td>${course.credits}</td>
 
-            <td>${course.department}</td>
+                <td>${course.department}</td>
 
-            <td>
+                <td>
 
-            <div class="action-buttons">
+                    <div class="action-buttons">
 
-            <button onclick="editCourse(${course.id})">
-                Edit
-            </button>
+                        <button onclick="editCourse(${course.id})">
+                            Edit
+                        </button>
 
-            <button class="delete-btn"
-            onclick="deleteCourse(${course.id})">
-                Delete
-            </button>
+                        <button class="delete-btn"
+                                onclick="deleteCourse(${course.id})">
+                            Delete
+                        </button>
 
-            </div>
+                    </div>
 
-            </td>
+                </td>
 
             </tr>
 
             `;
 
-            table.innerHTML+=row;
+            table.innerHTML += row;
 
         });
 
-    });
+    }
+    catch (error) {
+
+        console.log(error);
+
+        showMessage("Server Error");
+
+    }
 
 }
 
@@ -108,9 +158,7 @@ function addCourse(){
 
         method:"POST",
 
-        headers:{
-            "Content-Type":"application/json"
-        },
+        headers: getHeaders(),
 
         body:JSON.stringify(course)
 
@@ -162,7 +210,11 @@ function showMessage(message){
 
 function editCourse(id){
 
-    fetch(`${API_URL}/${id}`)
+    fetch(`${API_URL}/${id}`, {
+
+        headers: getHeaders()
+
+    })
 
     .then(response => response.json())
 
@@ -201,9 +253,7 @@ function updateCourse(){
 
         method:"PUT",
 
-        headers:{
-            "Content-Type":"application/json"
-        },
+        headers: getHeaders(),
 
         body:JSON.stringify(course)
 
@@ -250,7 +300,9 @@ function deleteCourse(id){
 
     fetch(`${API_URL}/${id}`, {
 
-        method:"DELETE"
+        method:"DELETE",
+
+        headers: getHeaders()
 
     })
 
