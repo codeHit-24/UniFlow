@@ -7,6 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.List;
 
 @RestController
@@ -24,6 +27,28 @@ public class EnrollmentController {
     @GetMapping
     public List<Enrollment> getEnrollments(){
         return enrollmentService.getAllEnrollments();
+    }
+
+    @GetMapping("/me")
+    public List<Enrollment> getMyEnrollments(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+
+        return enrollmentService.getEnrollmentsByUsername(
+                userDetails.getUsername()
+        );
+
+    }
+
+    @GetMapping("/my-students")
+    public List<Enrollment> getMyStudents(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+
+        return enrollmentService.getEnrollmentsByFacultyUsername(
+                userDetails.getUsername()
+        );
+
     }
 
     @GetMapping("/{id}")

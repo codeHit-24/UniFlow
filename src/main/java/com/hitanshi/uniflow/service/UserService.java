@@ -37,16 +37,30 @@ public class UserService {
 
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() ->
-                        new InvalidCredentialsException("Invalid username or password"));
+                        new InvalidCredentialsException(
+                                "Invalid username or password"
+                        )
+                );
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new InvalidCredentialsException("Invalid username or password");
+        if (!passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword()
+        )) {
+
+            throw new InvalidCredentialsException(
+                    "Invalid username or password"
+            );
+
         }
 
         LoginResponse response = new LoginResponse();
 
         response.setToken(
                 jwtService.generateToken(user.getUsername())
+        );
+
+        response.setRole(
+                user.getRole().name()
         );
 
         return response;

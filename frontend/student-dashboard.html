@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Student Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <h2>UniFlow</h2>
+
+    <button onclick="logout()">Logout</button>
+
+</nav>
+
+<div class="container">
+
+    <h1>Welcome Student 👋</h1>
+
+    <div class="student-dashboard-cards">
+
+        <div class="student-card"
+             onclick="window.location.href='profile.html'">
+
+            <h2>👤 My Profile</h2>
+
+            <p>View your personal details</p>
+
+        </div>
+
+        <div class="student-card"
+             onclick="window.location.href='my-courses.html'">
+
+            <h2>📚 My Courses</h2>
+
+            <p>View enrolled courses</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="student-dashboard.js"></script>
+
+</body>
+
+</html>

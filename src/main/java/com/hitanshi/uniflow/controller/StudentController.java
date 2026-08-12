@@ -5,6 +5,8 @@ import com.hitanshi.uniflow.entity.Student;
 import com.hitanshi.uniflow.service.StudentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +26,16 @@ public class StudentController {
     @GetMapping
     public List<StudentResponseDTO> getStudents(){
         return studentService.getStudents();
+    }
+
+    @GetMapping("/me")
+    public Student getMyProfile(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+
+        return studentService.getStudentByUsername(
+                userDetails.getUsername()
+        );
     }
 
     @GetMapping("/{id}")

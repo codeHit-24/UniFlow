@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile - UniFlow</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <h2>UniFlow</h2>
+
+    <button onclick="logout()">Logout</button>
+
+</nav>
+
+<div class="container">
+
+    <h1>My Profile 👤</h1>
+
+    <div class="profile-card">
+
+        <p><strong>First Name:</strong> <span id="firstName">Loading...</span></p>
+
+        <p><strong>Last Name:</strong> <span id="lastName">Loading...</span></p>
+
+        <p><strong>Email:</strong> <span id="email">Loading...</span></p>
+
+        <p><strong>Department:</strong> <span id="department">Loading...</span></p>
+
+        <p><strong>Semester:</strong> <span id="semester">Loading...</span></p>
+
+    </div>
+
+    <button onclick="goBack()">Back to Dashboard</button>
+
+</div>
+
+<script src="profile.js"></script>
+
+</body>
+
+</html>

@@ -27,13 +27,36 @@ public class SecurityConfig {
                                 "/users/login"
                         ).permitAll()
 
+                        .requestMatchers("/Students/me")
+                        .hasRole("STUDENT")
+
+                        .requestMatchers("/Students/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers("/Courses/me")
+                        .hasRole("FACULTY")
+
+                        .requestMatchers("/Courses/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers("/enrollments/me")
+                        .hasRole("STUDENT")
+
+                        .requestMatchers("/enrollments/my-students")
+                        .hasRole("FACULTY")
+
+                        .requestMatchers("/enrollments/**")
+                        .hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
+
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS
                         )
                 )
+
                 .addFilterBefore(
                         jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class

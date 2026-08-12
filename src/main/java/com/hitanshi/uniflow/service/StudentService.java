@@ -96,4 +96,14 @@ public class StudentService {
                 student.getSemester()
         );
     }
+
+    public Student getStudentByUsername(String username) {
+
+        return studentRepository.findByUserUsername(username)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Student profile not found for user: " + username
+                        )
+                );
+    }
 }

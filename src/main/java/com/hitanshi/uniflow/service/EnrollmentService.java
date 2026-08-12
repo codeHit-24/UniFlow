@@ -67,4 +67,18 @@ public class EnrollmentService {
         enrollmentRepository.delete(enrollment);
     }
 
+    public List<Enrollment> getEnrollmentsByUsername(String username) {
+
+        return enrollmentRepository
+                .findByStudentUserUsername(username);
+
+    }
+
+    public List<Enrollment> getEnrollmentsByFacultyUsername(String username) {
+
+        return enrollmentRepository
+                .findByCourseFacultyUsername(username);
+
+    }
+
 }

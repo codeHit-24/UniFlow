@@ -39,6 +39,16 @@ async function loadStudents() {
 
         });
 
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+
+            window.location.href = "login.html";
+
+            return;
+
+        }
+
         if (!response.ok) {
 
             showMessage("Failed to load students");
@@ -86,6 +96,16 @@ async function loadCourses() {
             headers: getHeaders()
 
         });
+
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+
+            window.location.href = "login.html";
+
+            return;
+
+        }
 
         if (!response.ok) {
 
@@ -152,7 +172,17 @@ function addEnrollment(){
 
     .then(response => {
 
-        if(response.ok){
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+
+            window.location.href = "login.html";
+
+            return;
+
+        }
+
+        else if(response.ok){
 
             showMessage("Student enrolled successfully!");
 
@@ -274,7 +304,17 @@ function deleteEnrollment(id){
 
     .then(response=>{
 
-        if(response.ok){
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+
+            window.location.href = "login.html";
+
+            return;
+
+        }
+
+        else if(response.ok){
 
             showMessage("Enrollment removed successfully!");
 

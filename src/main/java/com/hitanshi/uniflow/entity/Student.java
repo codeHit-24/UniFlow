@@ -10,6 +10,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
 
 import java.util.List;
 
@@ -46,6 +48,11 @@ public class Student {
     @Min(value = 1, message = "Semester must be at least 1")
     @Max(value = 8, message = "Semester cannot exceed 8")
     private int semester;
+
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
 
     @JsonIgnore
     @OneToMany(

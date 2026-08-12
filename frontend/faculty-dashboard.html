@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Faculty Dashboard - UniFlow</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <h2>UniFlow</h2>
+
+    <div>
+
+        <span id="facultyName">
+            Faculty
+        </span>
+
+        <button onclick="logout()">
+            Logout
+        </button>
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <h1>Faculty Dashboard 👨‍🏫</h1>
+
+    <p>
+        Welcome to your UniFlow faculty portal.
+    </p>
+
+
+    <div class="dashboard-cards">
+
+
+        <div class="dashboard-card"
+             onclick="goToCourses()">
+
+            <h2>📚</h2>
+
+            <h3>My Courses</h3>
+
+            <p>
+                View your assigned courses
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card"
+             onclick="goToStudents()">
+
+            <h2>👨‍🎓</h2>
+
+            <h3>My Students</h3>
+
+            <p>
+                View students enrolled in your courses
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card"
+             onclick="goToStatistics()">
+
+            <h2>📊</h2>
+
+            <h3>Statistics</h3>
+
+            <p>
+                View your course statistics
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <div id="message"></div>
+
+</div>
+
+
+<script src="faculty-dashboard.js"></script>
+
+</body>
+
+</html>

@@ -21,17 +21,24 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
+
     @Column(nullable = false)
     private String courseName;
+
     @Column(nullable = false, unique = true)
     private String courseCode;
+
     @Column(nullable = false)
     private int credits;
+
     @Column(nullable = false)
     private String department;
+
+    @ManyToOne
+    @JoinColumn(name = "faculty_id")
+    private User faculty;
 
     @JsonIgnore
     @OneToMany(mappedBy = "course")
     private List<Enrollment> enrollments;
 }
-

@@ -36,8 +36,29 @@ function login() {
     .then(data => {
 
         localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role);
 
-        window.location.href = "index.html";
+        if (data.role === "ADMIN") {
+
+            window.location.href = "index.html";
+
+        }
+        else if (data.role === "STUDENT") {
+
+            window.location.href = "student-dashboard.html";
+
+        }
+        else if (data.role === "FACULTY") {
+
+            window.location.href = "faculty-dashboard.html";
+
+        }
+        else {
+
+            document.getElementById("message").innerHTML =
+                "Unknown user role";
+
+        }
 
     })
 

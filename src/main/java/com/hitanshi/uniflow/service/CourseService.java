@@ -83,7 +83,18 @@ public class CourseService {
                 updatedCourse.getCredits()
         );
 
+        existingCourse.setFaculty(
+                updatedCourse.getFaculty()
+        );
 
         return courseRepository.save(existingCourse);
+    }
+
+    public List<CourseResponseDTO> getCoursesForFaculty(String username) {
+
+        return courseRepository.findByFacultyUsername(username)
+                .stream()
+                .map(this::convertToDTO)
+                .toList();
     }
 }

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Faculty Statistics - UniFlow</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <h2>UniFlow</h2>
+
+    <button onclick="logout()">
+        Logout
+    </button>
+
+</nav>
+
+<div class="container">
+
+    <h1>Faculty Statistics 📊</h1>
+
+    <p>
+        Overview of your courses and students.
+    </p>
+
+    <div class="stats-container">
+
+        <div class="stat-card">
+
+            <h2 id="courseCount">0</h2>
+
+            <p>Total Courses</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h2 id="studentCount">0</h2>
+
+            <p>Total Students</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h2 id="enrollmentCount">0</h2>
+
+            <p>Total Enrollments</p>
+
+        </div>
+
+    </div>
+
+    <br>
+
+    <button onclick="goBack()">
+        Back to Dashboard
+    </button>
+
+</div>
+
+<script src="faculty-statistics.js"></script>
+
+</body>
+
+</html>
