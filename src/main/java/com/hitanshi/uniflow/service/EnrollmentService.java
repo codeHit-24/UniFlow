@@ -81,4 +81,10 @@ public class EnrollmentService {
 
     }
 
+    public List<Enrollment> getEnrollmentsByCourseId(Long courseId) {
+
+        return enrollmentRepository.findByCourseId(courseId);
+
+    }
+
 }

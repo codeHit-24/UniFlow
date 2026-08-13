@@ -97,4 +97,18 @@ public class CourseService {
                 .map(this::convertToDTO)
                 .toList();
     }
+
+    public boolean facultyOwnsCourse(Long courseId, String username) {
+
+        return courseRepository
+                .findById(courseId)
+                .map(course ->
+                        course.getFaculty() != null
+                                && course.getFaculty()
+                                .getUsername()
+                                .equals(username)
+                )
+                .orElse(false);
+
+    }
 }

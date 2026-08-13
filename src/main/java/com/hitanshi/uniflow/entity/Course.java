@@ -34,6 +34,7 @@ public class Course {
     @Column(nullable = false)
     private String department;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "faculty_id")
     private User faculty;

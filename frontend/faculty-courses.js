@@ -119,6 +119,11 @@ async function loadMyCourses() {
                         ${course.department}
                     </p>
 
+                    <button
+                        onclick="viewStudents(${course.id})">
+                        View Students 👨‍🎓
+                    </button>
+
                 </div>
 
             `;
@@ -140,6 +145,13 @@ async function loadMyCourses() {
         `;
 
     }
+
+}
+
+function viewStudents(courseId) {
+
+    window.location.href =
+        `faculty-course-students.html?courseId=${courseId}`;
 
 }
 

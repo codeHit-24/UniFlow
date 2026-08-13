@@ -12,4 +12,6 @@ public interface EnrollmentRepository
 
     List<Enrollment> findByCourseFacultyUsername(String username);
 
+    List<Enrollment> findByCourseId(Long courseId);
+
 }
