@@ -1,90 +1,240 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 
 <head>
 
-    <title>UniFlow ERP - Courses</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Course Management - UniFlow</title>
 
     <link rel="stylesheet" href="style.css">
 
 </head>
 
-
 <body>
 
+<div class="dashboard-layout">
 
-<h1 class="page-title">UniFlow ERP</h1>
+    <!-- Sidebar -->
 
-<h2 class="page-title">Course Management</h2>
+    <aside class="sidebar">
 
-<nav>
+        <div class="sidebar-logo">
+            Uni<span>Flow</span>
+        </div>
 
-    <a href="dashboard.html">Dashboard</a>
+        <nav class="sidebar-menu">
 
-    <a href="index.html">Students</a>
+            <a href="dashboard.html">
+                Dashboard
+            </a>
 
-    <a href="courses.html">Courses</a>
+            <a href="index.html">
+                Students
+            </a>
 
-    <a href="enrollments.html">Enrollments</a>
+            <a href="courses.html" class="active">
+                Courses
+            </a>
 
-</nav>
+            <a href="enrollments.html">
+                Enrollments
+            </a>
 
+        </nav>
 
-<div id="message"></div>
-
-<div class="form-container">
-
-<h2 class="page-title">Add Course</h2>
-
-<input id="courseName" placeholder="Course Name">
-
-<input id="courseCode" placeholder="Course Code">
-
-<input id="credits" placeholder="Credits">
-
-<input id="department" placeholder="Department">
-
-<button onclick="saveCourse()">
-    Save Course
-</button>
-
-</div>
-
-<div class="table-container">
-<table>
-
-    <thead>
-
-    <tr>
-
-        <th>ID</th>
-
-        <th>Course Name</th>
-
-        <th>Course Code</th>
-
-        <th>Credits</th>
-
-        <th>Department</th>
-
-        <th>Action</th>
-
-    </tr>
-
-    </thead>
-
-    <tbody id="courseTable">
-
-    </tbody>
+    </aside>
 
 
-</table>
+    <!-- Main Content -->
+
+    <main class="dashboard-main">
+
+        <!-- Top Bar -->
+
+        <div class="dashboard-topbar">
+
+            <div>
+
+                <h2>Course Management</h2>
+
+                <p class="dashboard-subtitle">
+                    Create and manage courses in the UniFlow ERP system.
+                </p>
+
+            </div>
+
+            <div class="user-info">
+
+                <button
+                        class="logout-btn"
+                        onclick="logout()">
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Page Heading -->
+
+        <div class="page-title">
+
+            <h1>
+                Courses
+            </h1>
+
+            <p>
+                Add new courses and manage existing course records.
+            </p>
+
+        </div>
+
+
+        <!-- Add Course -->
+
+        <div class="form-container course-form">
+
+            <h2>
+                Add Course
+            </h2>
+
+            <div class="form-group">
+
+                <label for="courseName">
+                    Course Name
+                </label>
+
+                <input
+                        id="courseName"
+                        type="text"
+                        placeholder="Enter course name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="courseCode">
+                    Course Code
+                </label>
+
+                <input
+                        id="courseCode"
+                        type="text"
+                        placeholder="Enter course code"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="credits">
+                    Credits
+                </label>
+
+                <input
+                        id="credits"
+                        type="number"
+                        min="1"
+                        placeholder="Enter credits"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="department">
+                    Department
+                </label>
+
+                <input
+                        id="department"
+                        type="text"
+                        placeholder="Enter department"
+                >
+
+            </div>
+
+
+            <button onclick="saveCourse()">
+                Add Course
+            </button>
+
+        </div>
+
+
+        <!-- Course Table -->
+
+        <div class="content-panel course-list-panel">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>
+                        Course List
+                    </h3>
+
+                    <p>
+                        All courses currently registered in the system.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Course Name</th>
+
+                        <th>Course Code</th>
+
+                        <th>Credits</th>
+
+                        <th>Department</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody id="courseTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div id="message"></div>
+
+    </main>
+
 </div>
 
 
 <script src="course.js"></script>
-
-<div id="toast"></div>
 
 </body>
 

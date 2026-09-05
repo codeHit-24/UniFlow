@@ -89,4 +89,14 @@ public class EnrollmentController {
         return enrollmentService
                 .getEnrollmentsByCourseId(courseId);
     }
+
+    @GetMapping("/faculty/student-count")
+    public long getStudentCountByFaculty(
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+
+        return enrollmentService.getStudentCountByFaculty(
+                userDetails.getUsername()
+        );
+    }
 }

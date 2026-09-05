@@ -1,75 +1,140 @@
 const ENROLLMENT_API =
-"http://localhost:8080/enrollments";
+    "http://localhost:8080/enrollments";
 
 const STUDENT_API =
-"http://localhost:8080/Students";
+    "http://localhost:8080/Students";
 
 const COURSE_API =
-"http://localhost:8080/Courses";
+    "http://localhost:8080/Courses";
+
 
 const token = localStorage.getItem("token");
+const role = localStorage.getItem("role");
 
-if (!token) {
+
+/* =========================================================
+   AUTHENTICATION
+========================================================= */
+
+if (!token || role !== "ADMIN") {
 
     window.location.href = "login.html";
 
 }
 
+
+/* =========================================================
+   HEADERS
+========================================================= */
+
 function getHeaders() {
 
-    const token = localStorage.getItem("token");
+    const currentToken =
+        localStorage.getItem("token");
 
     return {
 
         "Content-Type": "application/json",
 
-        "Authorization": `Bearer ${token}`
+        "Authorization":
+            `Bearer ${currentToken}`
 
     };
 
 }
 
+
+/* =========================================================
+   HANDLE AUTH ERRORS
+========================================================= */
+
+function handleAuthError(response) {
+
+    if (response.status === 401) {
+
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+
+        window.location.href = "login.html";
+
+        return true;
+    }
+
+
+    if (response.status === 403) {
+
+        showMessage(
+            "You do not have permission to perform this action.",
+            "#dc3545"
+        );
+
+        return true;
+    }
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   LOAD STUDENTS
+========================================================= */
+
 async function loadStudents() {
 
     try {
 
-        const response = await fetch(STUDENT_API, {
+        const response =
+            await fetch(
+                STUDENT_API,
+                {
+                    headers: getHeaders()
+                }
+            );
 
-            headers: getHeaders()
 
-        });
-
-        if (response.status === 401) {
-
-            localStorage.removeItem("token");
-
-            window.location.href = "login.html";
-
+        if (handleAuthError(response)) {
             return;
-
         }
+
 
         if (!response.ok) {
 
-            showMessage("Failed to load students");
+            showMessage(
+                "Failed to load students.",
+                "#dc3545"
+            );
 
             return;
-
         }
 
-        const students = await response.json();
 
-        let dropdown = document.getElementById("studentSelect");
+        const students =
+            await response.json();
+
+
+        const dropdown =
+            document.getElementById(
+                "studentSelect"
+            );
+
 
         dropdown.innerHTML =
-            '<option value="">Select Student</option>';
+            `<option value="">
+                Select Student
+            </option>`;
+
 
         students.forEach(student => {
 
             dropdown.innerHTML += `
 
                 <option value="${student.id}">
-                    ${student.firstName} ${student.lastName}
+                    ${student.firstName}
+                    ${student.lastName}
+                    -
+                    ${student.email}
                 </option>
 
             `;
@@ -79,48 +144,69 @@ async function loadStudents() {
     }
     catch (error) {
 
-        console.log(error);
+        console.error(
+            "Error loading students:",
+            error
+        );
 
-        showMessage("Server Error");
+        showMessage(
+            "Unable to load students.",
+            "#dc3545"
+        );
 
     }
 
 }
 
+
+/* =========================================================
+   LOAD COURSES
+========================================================= */
+
 async function loadCourses() {
 
     try {
 
-        const response = await fetch(COURSE_API, {
+        const response =
+            await fetch(
+                COURSE_API,
+                {
+                    headers: getHeaders()
+                }
+            );
 
-            headers: getHeaders()
 
-        });
-
-        if (response.status === 401) {
-
-            localStorage.removeItem("token");
-
-            window.location.href = "login.html";
-
+        if (handleAuthError(response)) {
             return;
-
         }
+
 
         if (!response.ok) {
 
-            showMessage("Failed to load courses");
+            showMessage(
+                "Failed to load courses.",
+                "#dc3545"
+            );
 
             return;
-
         }
 
-        const courses = await response.json();
 
-        let dropdown = document.getElementById("courseSelect");
+        const courses =
+            await response.json();
+
+
+        const dropdown =
+            document.getElementById(
+                "courseSelect"
+            );
+
 
         dropdown.innerHTML =
-            '<option value="">Select Course</option>';
+            `<option value="">
+                Select Course
+            </option>`;
+
 
         courses.forEach(course => {
 
@@ -128,6 +214,8 @@ async function loadCourses() {
 
                 <option value="${course.id}">
                     ${course.courseName}
+                    -
+                    ${course.courseCode}
                 </option>
 
             `;
@@ -137,223 +225,473 @@ async function loadCourses() {
     }
     catch (error) {
 
-        console.log(error);
+        console.error(
+            "Error loading courses:",
+            error
+        );
 
-        showMessage("Server Error");
+        showMessage(
+            "Unable to load courses.",
+            "#dc3545"
+        );
 
     }
 
 }
 
-function addEnrollment(){
+
+/* =========================================================
+   ADD ENROLLMENT
+========================================================= */
+
+async function addEnrollment() {
+
+    const studentId =
+        document.getElementById(
+            "studentSelect"
+        ).value;
+
+
+    const courseId =
+        document.getElementById(
+            "courseSelect"
+        ).value;
+
+
+    const enrollmentDate =
+        document.getElementById(
+            "enrollmentDate"
+        ).value;
+
+
+    /* Validation */
+
+    if (!studentId) {
+
+        showMessage(
+            "Please select a student.",
+            "#dc3545"
+        );
+
+        return;
+    }
+
+
+    if (!courseId) {
+
+        showMessage(
+            "Please select a course.",
+            "#dc3545"
+        );
+
+        return;
+    }
+
+
+    if (!enrollmentDate) {
+
+        showMessage(
+            "Please select an enrollment date.",
+            "#dc3545"
+        );
+
+        return;
+    }
+
 
     const enrollment = {
 
         studentId:
-        document.getElementById("studentSelect").value,
+            Number(studentId),
 
         courseId:
-        document.getElementById("courseSelect").value,
+            Number(courseId),
 
         enrollmentDate:
-        document.getElementById("enrollmentDate").value
+            enrollmentDate
 
     };
 
-    fetch(ENROLLMENT_API,{
 
-        method:"POST",
+    try {
 
-        headers: getHeaders(),
+        const response =
+            await fetch(
+                ENROLLMENT_API,
+                {
 
-        body:JSON.stringify(enrollment)
+                    method: "POST",
 
-    })
+                    headers:
+                        getHeaders(),
 
-    .then(response => {
+                    body:
+                        JSON.stringify(
+                            enrollment
+                        )
 
-        if (response.status === 401) {
+                }
+            );
 
-            localStorage.removeItem("token");
 
-            window.location.href = "login.html";
+        if (handleAuthError(response)) {
+            return;
+        }
+
+
+        if (!response.ok) {
+
+            const errorText =
+                await response.text();
+
+            console.error(
+                "Enrollment error:",
+                errorText
+            );
+
+            showMessage(
+                "Failed to enroll student.",
+                "#dc3545"
+            );
 
             return;
-
         }
 
-        else if(response.ok){
 
-            showMessage("Student enrolled successfully!");
+        showMessage(
+            "Student enrolled successfully.",
+            "#16a34a"
+        );
 
-            loadEnrollments();
 
-            clearEnrollmentForm();
+        clearEnrollmentForm();
 
-        }
-        else{
 
-            showMessage("Failed to enroll student");
+        await loadEnrollments();
 
-        }
+    }
+    catch (error) {
 
-    })
+        console.error(
+            "Error adding enrollment:",
+            error
+        );
 
-    .catch(error => {
+        showMessage(
+            "Server error. Please try again.",
+            "#dc3545"
+        );
 
-        console.log(error);
-
-        showMessage("Server Error");
-
-    });
+    }
 
 }
+
+
+/* =========================================================
+   LOAD ENROLLMENTS
+========================================================= */
 
 async function loadEnrollments() {
 
     try {
 
-        const response = await fetch(ENROLLMENT_API, {
+        const response =
+            await fetch(
+                ENROLLMENT_API,
+                {
+                    headers:
+                        getHeaders()
+                }
+            );
 
-            headers: getHeaders()
 
-        });
-
-        if (response.status === 401) {
-
-            localStorage.removeItem("token");
-
-            window.location.href = "login.html";
-
+        if (handleAuthError(response)) {
             return;
-
         }
+
 
         if (!response.ok) {
 
-            showMessage("Failed to load enrollments");
+            showMessage(
+                "Failed to load enrollments.",
+                "#dc3545"
+            );
 
             return;
-
         }
 
-        const enrollments = await response.json();
 
-        let table = document.getElementById("enrollmentTable");
+        const enrollments =
+            await response.json();
+
+
+        const table =
+            document.getElementById(
+                "enrollmentTable"
+            );
+
 
         table.innerHTML = "";
 
-        enrollments.forEach(enrollment => {
 
-            table.innerHTML += `
+        if (enrollments.length === 0) {
 
-            <tr>
+            table.innerHTML = `
 
-                <td>${enrollment.id}</td>
+                <tr>
 
-                <td>
-                    ${enrollment.student.firstName}
-                    ${enrollment.student.lastName}
-                </td>
+                    <td
+                        colspan="5"
+                        class="empty-table">
+                        No enrollments found.
+                    </td>
 
-                <td>
-                    ${enrollment.course.courseName}
-                </td>
-
-                <td>
-                    ${enrollment.enrollmentDate}
-                </td>
-
-                <td>
-                    <button class="delete-btn"
-                        onclick="deleteEnrollment(${enrollment.id})">
-                        Delete
-                    </button>
-                </td>
-
-            </tr>
+                </tr>
 
             `;
 
-        });
+            return;
+        }
+
+
+        enrollments.forEach(
+            enrollment => {
+
+                const student =
+                    enrollment.student;
+
+                const course =
+                    enrollment.course;
+
+
+                table.innerHTML += `
+
+                    <tr>
+
+                        <td>
+                            ${enrollment.id}
+                        </td>
+
+                        <td>
+
+                            ${student.firstName}
+                            ${student.lastName}
+
+                        </td>
+
+                        <td>
+
+                            ${course.courseName}
+
+                            <small class="course-code">
+                                ${course.courseCode}
+                            </small>
+
+                        </td>
+
+                        <td>
+                            ${enrollment.enrollmentDate}
+                        </td>
+
+                        <td>
+
+                            <div
+                                class="action-buttons">
+
+                                <button
+                                    class="delete-btn"
+                                    onclick="
+                                        deleteEnrollment(
+                                            ${enrollment.id}
+                                        )
+                                    ">
+
+                                    Delete
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
 
     }
     catch (error) {
 
-        console.log(error);
+        console.error(
+            "Error loading enrollments:",
+            error
+        );
 
-        showMessage("Server Error");
+        showMessage(
+            "Unable to load enrollments.",
+            "#dc3545"
+        );
 
     }
 
 }
 
-function deleteEnrollment(id){
 
-    if(!confirm("Delete this enrollment?")){
+/* =========================================================
+   DELETE ENROLLMENT
+========================================================= */
+
+async function deleteEnrollment(id) {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to remove this enrollment?"
+        );
+
+
+    if (!confirmed) {
         return;
     }
 
-    fetch(`${ENROLLMENT_API}/${id}`,{
 
-        method:"DELETE",
+    try {
 
-        headers: getHeaders()
+        const response =
+            await fetch(
+                `${ENROLLMENT_API}/${id}`,
+                {
 
-    })
+                    method: "DELETE",
 
-    .then(response=>{
+                    headers:
+                        getHeaders()
 
-        if (response.status === 401) {
+                }
+            );
 
-            localStorage.removeItem("token");
 
-            window.location.href = "login.html";
+        if (handleAuthError(response)) {
+            return;
+        }
+
+
+        if (!response.ok) {
+
+            showMessage(
+                "Failed to remove enrollment.",
+                "#dc3545"
+            );
 
             return;
-
         }
 
-        else if(response.ok){
 
-            showMessage("Enrollment removed successfully!");
+        showMessage(
+            "Enrollment removed successfully.",
+            "#16a34a"
+        );
 
-            loadEnrollments();
 
-        }else{
+        await loadEnrollments();
 
-            showMessage("Failed to remove enrollment");
+    }
+    catch (error) {
 
-        }
+        console.error(
+            "Error deleting enrollment:",
+            error
+        );
 
-    });
+        showMessage(
+            "Server error. Please try again.",
+            "#dc3545"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CLEAR FORM
+========================================================= */
+
+function clearEnrollmentForm() {
+
+    document.getElementById(
+        "studentSelect"
+    ).selectedIndex = 0;
+
+
+    document.getElementById(
+        "courseSelect"
+    ).selectedIndex = 0;
+
+
+    document.getElementById(
+        "enrollmentDate"
+    ).value = "";
 
 }
 
-function clearEnrollmentForm(){
 
-    document.getElementById("studentSelect").selectedIndex = 0;
+/* =========================================================
+   MESSAGE
+========================================================= */
 
-    document.getElementById("courseSelect").selectedIndex = 0;
+function showMessage(
+    message,
+    color = "#16a34a"
+) {
 
-    document.getElementById("enrollmentDate").value = "";
+    const box =
+        document.getElementById(
+            "message"
+        );
+
+
+    box.innerHTML =
+        message;
+
+
+    box.style.background =
+        color;
+
+
+    box.style.opacity =
+        "1";
+
+
+    setTimeout(() => {
+
+        box.style.opacity =
+            "0";
+
+    }, 3000);
 
 }
 
-function showMessage(message){
 
-    let box = document.getElementById("message");
+/* =========================================================
+   LOGOUT
+========================================================= */
 
-    box.innerHTML = message;
+function logout() {
 
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
 
-    setTimeout(()=>{
-
-        box.innerHTML="";
-
-    },3000);
+    window.location.href =
+        "login.html";
 
 }
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
 
 loadStudents();
 loadCourses();

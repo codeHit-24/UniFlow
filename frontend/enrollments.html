@@ -1,89 +1,203 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>UniFlow ERP - Enrollments</title>
+    <title>Enrollment Management - UniFlow ERP</title>
 
     <link rel="stylesheet" href="style.css">
-
 </head>
-
 
 <body>
 
+<div class="dashboard-layout">
 
-<h1 class="page-title">UniFlow ERP</h1>
+    <aside class="sidebar">
 
-<h2 class="page-title">Enrollment Management</h2>
+        <div class="sidebar-logo">
+            Uni<span>Flow</span>
+        </div>
 
-<nav>
+        <div class="sidebar-menu">
 
-    <a href="dashboard.html">Dashboard</a>
+            <a href="dashboard.html">
+                Dashboard
+            </a>
 
-    <a href="index.html">Students</a>
+            <a href="index.html">
+                Students
+            </a>
 
-    <a href="courses.html">Courses</a>
+            <a href="courses.html">
+                Courses
+            </a>
 
-    <a href="enrollments.html">Enrollments</a>
+            <a href="enrollments.html" class="active">
+                Enrollments
+            </a>
 
-</nav>
+        </div>
 
-<div id="message"></div>
-
-<div class="form-container">
-<h2 class="page-title">Add Enrollment</h2>
-
-<select id="studentSelect">
-    <option value="">Select Student</option>
-</select>
-
-<select id="courseSelect">
-    <option value="">Select Course</option>
-</select>
-
-<input
-        type="date"
-        id="enrollmentDate">
-
-<button onclick="addEnrollment()">
-    Enroll Student
-</button>
-</div>
-
-<div class="table-container">
-<table>
-
-    <thead>
-
-    <tr>
-
-        <th>ID</th>
-
-        <th>Student</th>
-
-        <th>Course</th>
-
-        <th>Date</th>
-
-        <th>Action</th>
-
-    </tr>
-
-    </thead>
-
-    <tbody id="enrollmentTable">
-
-    </tbody>
+    </aside>
 
 
-</table>
+    <main class="dashboard-main">
+
+        <div class="dashboard-topbar">
+
+            <div>
+                <h2>Enrollment Management</h2>
+                <p class="topbar-subtitle">
+                    Manage student course enrollments
+                </p>
+            </div>
+
+            <button
+                    class="logout-btn"
+                    onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+
+        <div id="message"></div>
+
+
+        <div class="form-container enrollment-form">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Add Enrollment</h2>
+
+                    <p>
+                        Enroll a student in a course
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label for="studentSelect">
+                        Student
+                    </label>
+
+                    <select id="studentSelect">
+
+                        <option value="">
+                            Select Student
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="courseSelect">
+                        Course
+                    </label>
+
+                    <select id="courseSelect">
+
+                        <option value="">
+                            Select Course
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="enrollmentDate">
+                        Enrollment Date
+                    </label>
+
+                    <input
+                            type="date"
+                            id="enrollmentDate">
+
+                </div>
+
+            </div>
+
+
+            <button
+                    class="primary-action"
+                    onclick="addEnrollment()">
+
+                Enroll Student
+
+            </button>
+
+        </div>
+
+
+        <div class="content-panel">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>Current Enrollments</h2>
+
+                    <p>
+                        Students currently enrolled in courses
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Student</th>
+
+                        <th>Course</th>
+
+                        <th>Enrollment Date</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody id="enrollmentTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
 </div>
 
 
 <script src="enrollment.js"></script>
-
-<div id="toast"></div>
 
 </body>
 

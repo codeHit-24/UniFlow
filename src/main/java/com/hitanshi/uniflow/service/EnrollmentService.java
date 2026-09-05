@@ -87,4 +87,10 @@ public class EnrollmentService {
 
     }
 
+    public long getStudentCountByFaculty(String username) {
+
+        return enrollmentRepository
+                .countDistinctStudentsByFacultyUsername(username);
+    }
+
 }

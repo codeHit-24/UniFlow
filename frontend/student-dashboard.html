@@ -5,7 +5,9 @@
 
     <meta charset="UTF-8">
 
-    <title>Student Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard - UniFlow</title>
 
     <link rel="stylesheet" href="style.css">
 
@@ -13,41 +15,144 @@
 
 <body>
 
-<nav class="navbar">
+<div class="dashboard-layout">
 
-    <h2>UniFlow</h2>
+    <!-- Sidebar -->
 
-    <button onclick="logout()">Logout</button>
+    <aside class="sidebar">
 
-</nav>
+        <div class="sidebar-logo">
+            Uni<span>Flow</span>
+        </div>
 
-<div class="container">
+        <nav class="sidebar-menu">
 
-    <h1>Welcome Student 👋</h1>
+            <a href="student-dashboard.html" class="active">
+                Dashboard
+            </a>
 
-    <div class="student-dashboard-cards">
+            <a href="profile.html">
+                My Profile
+            </a>
 
-        <div class="student-card"
-             onclick="window.location.href='profile.html'">
+            <a href="my-courses.html">
+                My Courses
+            </a>
 
-            <h2>👤 My Profile</h2>
+        </nav>
 
-            <p>View your personal details</p>
+        <div class="sidebar-bottom">
+
+            <button onclick="logout()">
+                Logout
+            </button>
 
         </div>
 
-        <div class="student-card"
-             onclick="window.location.href='my-courses.html'">
+    </aside>
 
-            <h2>📚 My Courses</h2>
 
-            <p>View enrolled courses</p>
+    <!-- Main Content -->
+
+    <main class="dashboard-main">
+
+        <!-- Top Bar -->
+
+        <div class="dashboard-topbar">
+
+            <div>
+
+                <h2>Student Dashboard</h2>
+
+                <p class="dashboard-subtitle">
+                    Overview of your academic information
+                </p>
+
+            </div>
+
+            <div class="user-info">
+
+                <span id="studentName">
+                    Student
+                </span>
+
+            </div>
 
         </div>
 
-    </div>
+
+        <!-- Page Heading -->
+
+        <div class="page-title">
+
+            <h1>
+                Welcome back
+            </h1>
+
+            <p>
+                Manage your profile and view your enrolled courses.
+            </p>
+
+        </div>
+
+
+        <!-- Dashboard Cards -->
+
+        <div class="student-dashboard-cards">
+
+            <div
+                    class="student-card"
+                    onclick="window.location.href='profile.html'"
+            >
+
+                <div class="student-card-icon">
+                    P
+                </div>
+
+                <div>
+
+                    <h2>
+                        My Profile
+                    </h2>
+
+                    <p>
+                        View and manage your personal information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                    class="student-card"
+                    onclick="window.location.href='my-courses.html'"
+            >
+
+                <div class="student-card-icon">
+                    C
+                </div>
+
+                <div>
+
+                    <h2>
+                        My Courses
+                    </h2>
+
+                    <p>
+                        View the courses you are currently enrolled in.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
 
 </div>
+
 
 <script src="student-dashboard.js"></script>
 

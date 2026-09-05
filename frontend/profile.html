@@ -2,42 +2,197 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>My Profile - UniFlow</title>
+
     <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-<nav class="navbar">
+<div class="dashboard-layout">
 
-    <h2>UniFlow</h2>
+    <!-- Sidebar -->
 
-    <button onclick="logout()">Logout</button>
+    <aside class="sidebar">
 
-</nav>
+        <div class="sidebar-logo">
+            Uni<span>Flow</span>
+        </div>
 
-<div class="container">
+        <nav class="sidebar-menu">
 
-    <h1>My Profile 👤</h1>
+            <a href="student-dashboard.html">
+                Dashboard
+            </a>
 
-    <div class="profile-card">
+            <a href="profile.html" class="active">
+                My Profile
+            </a>
 
-        <p><strong>First Name:</strong> <span id="firstName">Loading...</span></p>
+            <a href="my-courses.html">
+                My Courses
+            </a>
 
-        <p><strong>Last Name:</strong> <span id="lastName">Loading...</span></p>
+        </nav>
 
-        <p><strong>Email:</strong> <span id="email">Loading...</span></p>
+        <div class="sidebar-bottom">
 
-        <p><strong>Department:</strong> <span id="department">Loading...</span></p>
+            <button onclick="logout()">
+                Logout
+            </button>
 
-        <p><strong>Semester:</strong> <span id="semester">Loading...</span></p>
+        </div>
 
-    </div>
+    </aside>
 
-    <button onclick="goBack()">Back to Dashboard</button>
+
+    <!-- Main Content -->
+
+    <main class="dashboard-main">
+
+        <!-- Top Bar -->
+
+        <div class="dashboard-topbar">
+
+            <div>
+
+                <h2>My Profile</h2>
+
+                <p class="dashboard-subtitle">
+                    View your personal and academic information
+                </p>
+
+            </div>
+
+            <div class="user-info">
+
+                <span id="profileName">
+                    Student
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Page Heading -->
+
+        <div class="page-title">
+
+            <h1>
+                Personal Information
+            </h1>
+
+            <p>
+                Your registered student information.
+            </p>
+
+        </div>
+
+
+        <!-- Profile -->
+
+        <div class="profile-card">
+
+            <div class="profile-row">
+
+                <span class="profile-label">
+                    First Name
+                </span>
+
+                <span
+                        class="profile-value"
+                        id="firstName"
+                >
+                    Loading...
+                </span>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <span class="profile-label">
+                    Last Name
+                </span>
+
+                <span
+                        class="profile-value"
+                        id="lastName"
+                >
+                    Loading...
+                </span>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <span class="profile-label">
+                    Email
+                </span>
+
+                <span
+                        class="profile-value"
+                        id="email"
+                >
+                    Loading...
+                </span>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <span class="profile-label">
+                    Department
+                </span>
+
+                <span
+                        class="profile-value"
+                        id="department"
+                >
+                    Loading...
+                </span>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <span class="profile-label">
+                    Semester
+                </span>
+
+                <span
+                        class="profile-value"
+                        id="semester"
+                >
+                    Loading...
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+                class="back-button"
+                onclick="goBack()"
+        >
+            Back to Dashboard
+        </button>
+
+    </main>
 
 </div>
+
 
 <script src="profile.js"></script>
 

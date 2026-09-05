@@ -2,94 +2,405 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Faculty Dashboard - UniFlow</title>
 
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
-<nav class="navbar">
+<div class="app-layout">
 
-    <h2>UniFlow</h2>
+    <!-- ================= SIDEBAR ================= -->
 
-    <div>
+    <aside class="sidebar">
 
-        <span id="facultyName">
-            Faculty
-        </span>
+        <div class="brand">
 
-        <button onclick="logout()">
-            Logout
-        </button>
+            <div class="brand-logo">
+                U
+            </div>
 
-    </div>
-
-</nav>
-
-
-<div class="container">
-
-    <h1>Faculty Dashboard 👨‍🏫</h1>
-
-    <p>
-        Welcome to your UniFlow faculty portal.
-    </p>
-
-
-    <div class="dashboard-cards">
-
-
-        <div class="dashboard-card"
-             onclick="goToCourses()">
-
-            <h2>📚</h2>
-
-            <h3>My Courses</h3>
-
-            <p>
-                View your assigned courses
-            </p>
+            <div class="brand-text">
+                <h2>UniFlow</h2>
+                <span>College ERP</span>
+            </div>
 
         </div>
 
 
-        <div class="dashboard-card"
-             onclick="goToStudents()">
+        <!-- Faculty Profile -->
 
-            <h2>👨‍🎓</h2>
+        <div class="sidebar-profile">
 
-            <h3>My Students</h3>
+            <div class="profile-avatar">
+                F
+            </div>
 
-            <p>
-                View students enrolled in your courses
-            </p>
+            <div>
+                <strong id="facultyName">
+                    Faculty
+                </strong>
 
-        </div>
-
-
-        <div class="dashboard-card"
-             onclick="goToStatistics()">
-
-            <h2>📊</h2>
-
-            <h3>Statistics</h3>
-
-            <p>
-                View your course statistics
-            </p>
+                <span>
+                    Faculty Portal
+                </span>
+            </div>
 
         </div>
 
 
-    </div>
+        <!-- Navigation -->
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-section-title">
+                MAIN
+            </div>
+
+            <a href="faculty-dashboard.html"
+               class="nav-item active">
+
+                <span class="nav-icon">▦</span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
 
 
-    <div id="message"></div>
+            <a href="faculty-courses.html"
+               class="nav-item">
+
+                <span class="nav-icon">▣</span>
+
+                <span>
+                    My Courses
+                </span>
+
+            </a>
+
+
+            <a href="faculty-students.html"
+               class="nav-item">
+
+                <span class="nav-icon">♙</span>
+
+                <span>
+                    My Students
+                </span>
+
+            </a>
+
+            <a href="faculty-statistics.html"
+               class="nav-item">
+
+                <span class="nav-icon">▥</span>
+
+                <span>
+                    Statistics
+                </span>
+
+            </a>
+
+
+            <div class="nav-section-title account-title">
+                ACCOUNT
+            </div>
+
+
+            <button
+                    class="nav-item logout-nav"
+                    onclick="logout()">
+
+                <span class="nav-icon">↪</span>
+
+                <span>
+                    Logout
+                </span>
+
+            </button>
+
+        </nav>
+
+
+        <!-- Sidebar Footer -->
+
+        <div class="sidebar-footer">
+
+            <strong>UniFlow ERP</strong>
+
+            <span>
+                Faculty Management System
+            </span>
+
+            <small>
+                © 2026 UniFlow
+            </small>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- Top Header -->
+
+        <header class="top-header">
+
+            <div></div>
+
+            <div class="header-right">
+
+                <button class="notification-btn"
+                        title="Notifications">
+
+                    ♢
+
+                </button>
+
+
+                <div class="header-user">
+
+                    <div class="header-avatar">
+                        F
+                    </div>
+
+                    <div class="header-user-info">
+
+                        <strong id="headerFacultyName">
+                            Faculty
+                        </strong>
+
+                        <span>
+                            Faculty
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= WELCOME BANNER ================= -->
+
+        <section class="welcome-banner">
+
+            <div>
+
+                <span class="banner-label">
+                    FACULTY PORTAL
+                </span>
+
+                <h1>
+                    Welcome back,
+                    <span id="welcomeFacultyName">
+
+                    </span>
+                </h1>
+
+                <p>
+                    Here's an overview of your teaching activities.
+                </p>
+
+            </div>
+
+            <div class="banner-decoration">
+                U
+            </div>
+
+        </section>
+
+
+        <!-- ================= SUMMARY CARDS ================= -->
+
+        <section class="summary-grid">
+
+            <!-- Assigned Courses -->
+            <div class="summary-card">
+
+                <div class="summary-icon blue-icon">
+                    ▣
+                </div>
+
+                <div class="summary-content">
+
+            <span>
+                Assigned Courses
+            </span>
+
+                    <strong id="courseCount">
+                        —
+                    </strong>
+
+                </div>
+
+                <p>
+                    Courses assigned to you
+                </p>
+
+            </div>
+
+
+            <!-- My Students -->
+            <div class="summary-card">
+
+                <div class="summary-icon green-icon">
+                    ♙
+                </div>
+
+                <div class="summary-content">
+
+            <span>
+                My Students
+            </span>
+
+                    <strong id="studentCount">
+                        —
+                    </strong>
+
+                </div>
+
+                <p>
+                    Students enrolled in your courses
+                </p>
+
+            </div>
+
+
+            <!-- Course Activity -->
+            <div class="summary-card">
+
+                <div class="summary-icon purple-icon">
+                    ↗
+                </div>
+
+                <div class="summary-content">
+
+            <span>
+                Course Activity
+            </span>
+
+                    <strong>
+                        Active
+                    </strong>
+
+                </div>
+
+                <p>
+                    Your courses are running smoothly
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= QUICK ACTIONS ================= -->
+
+        <section class="content-section">
+
+            <div class="section-heading">
+
+                <h2>
+                    Quick Actions
+                </h2>
+
+                <p>
+                    Access your frequently used faculty tools.
+                </p>
+
+            </div>
+
+
+            <div class="quick-actions">
+
+
+                <div class="action-card"
+                     onclick="goToCourses()">
+
+                    <div class="action-icon blue-icon">
+                        ▣
+                    </div>
+
+                    <h3>
+                        My Courses
+                    </h3>
+
+                    <p>
+                        View courses assigned to you.
+                    </p>
+
+                    <span class="action-link">
+                        View Courses →
+                    </span>
+
+                </div>
+
+
+                <div class="action-card"
+                     onclick="goToStudents()">
+
+                    <div class="action-icon green-icon">
+                        ♙
+                    </div>
+
+                    <h3>
+                        My Students
+                    </h3>
+
+                    <p>
+                        View students enrolled in your courses.
+                    </p>
+
+                    <span class="action-link">
+                        View Students →
+                    </span>
+
+                </div>
+
+
+                <div class="action-card"
+                     onclick="goToStatistics()">
+
+                    <div class="action-icon purple-icon">
+                        ▥
+                    </div>
+
+                    <h3>
+                        Statistics
+                    </h3>
+
+                    <p>
+                        Analyze your course statistics.
+                    </p>
+
+                    <span class="action-link">
+                        View Statistics →
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Message -->
+
+        <div id="message"></div>
+
+    </main>
 
 </div>
 

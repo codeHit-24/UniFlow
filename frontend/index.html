@@ -1,102 +1,278 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-    <title>UniFlow ERP</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Management - UniFlow</title>
 
     <link rel="stylesheet" href="style.css">
 
 </head>
 
-
 <body>
 
+<div class="dashboard-layout">
 
-<h1 class="page-title" style="text-align:center;">
-    UniFlow ERP
-</h1>
+    <!-- Sidebar -->
+    <aside class="sidebar">
 
-<button onclick="logout()">Logout</button>
+        <div class="sidebar-logo">
+            Uni<span>Flow</span>
+        </div>
 
+        <div class="sidebar-menu">
 
-<h2 class="page-title">
-    Student Management
-</h2>
+            <a href="dashboard.html">
+                Dashboard
+            </a>
 
-<nav>
+            <a href="index.html" class="active">
+                Students
+            </a>
 
-    <a href="dashboard.html">Dashboard</a>
+            <a href="courses.html">
+                Courses
+            </a>
 
-    <a href="index.html">Students</a>
+            <a href="enrollments.html">
+                Enrollments
+            </a>
 
-    <a href="courses.html">Courses</a>
+        </div>
 
-    <a href="enrollments.html">Enrollments</a>
-
-</nav>
-
-<div id="message"></div>
-
-<div class="form-container">
-
-    <h2 class="page-title">Add Student</h2>
-
-    <input id="firstName" placeholder="First Name">
-
-    <input id="lastName" placeholder="Last Name">
-
-    <input id="email" placeholder="Email">
-
-    <input id="department" placeholder="Department">
-
-    <input id="semester" placeholder="Semester">
-
-    <button id="saveBtn" onclick="saveStudent()">
-        Save Student
-    </button>
-
-</div>
-
-<div class="search-container">
-
-    <input
-            type="text"
-            id="searchInput"
-            placeholder="Search by name..."
-            onkeyup="searchStudent()">
-
-</div>
-
-<div class="table-container">
-<table>
-
-    <thead>
-
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Department</th>
-        <th>Semester</th>
-        <th>Action</th>
-    </tr>
-
-    </thead>
+    </aside>
 
 
-    <tbody id="studentTable">
+    <!-- Main Content -->
+    <main class="dashboard-main">
 
-    </tbody>
+        <!-- Top Bar -->
+        <div class="dashboard-topbar">
+
+            <div>
+                <h2>Student Management</h2>
+
+                <p class="topbar-subtitle">
+                    Manage student records and information
+                </p>
+            </div>
+
+            <div class="user-info">
+
+                <button
+                        class="logout-btn"
+                        onclick="logout()">
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
 
 
-</table>
+        <!-- Page Header -->
+        <div class="page-title">
+
+            <h1>Students</h1>
+
+            <p>
+                Add, update, search and manage university students.
+            </p>
+
+        </div>
+
+
+        <!-- Add / Edit Student -->
+        <div class="content-panel student-form-panel">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3 id="formTitle">
+                        Add Student
+                    </h3>
+
+                    <p>
+                        Enter the student's details below.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="student-form-grid">
+
+                <div class="form-field">
+
+                    <label for="firstName">
+                        First Name
+                    </label>
+
+                    <input
+                            id="firstName"
+                            type="text"
+                            placeholder="Enter first name">
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="lastName">
+                        Last Name
+                    </label>
+
+                    <input
+                            id="lastName"
+                            type="text"
+                            placeholder="Enter last name">
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                            id="email"
+                            type="email"
+                            placeholder="Enter email">
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="department">
+                        Department
+                    </label>
+
+                    <input
+                            id="department"
+                            type="text"
+                            placeholder="Enter department">
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="semester">
+                        Semester
+                    </label>
+
+                    <input
+                            id="semester"
+                            type="number"
+                            placeholder="Enter semester">
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                        id="saveBtn"
+                        onclick="saveStudent()">
+                    Save Student
+                </button>
+
+                <button
+                        type="button"
+                        class="secondary-btn"
+                        onclick="clearForm()">
+                    Clear
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Students List -->
+        <div class="content-panel">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>Student Records</h3>
+
+                    <p>
+                        View and manage registered students.
+                    </p>
+
+                </div>
+
+
+                <div class="student-search">
+
+                    <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Search students..."
+                            onkeyup="searchStudent()">
+
+                </div>
+
+            </div>
+
+
+            <div id="message"></div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Name</th>
+
+                        <th>Email</th>
+
+                        <th>Department</th>
+
+                        <th>Semester</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                    </thead>
+
+
+                    <tbody id="studentTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
 </div>
 
 
 <script src="script.js"></script>
-
-<div id="toast"></div>
 
 </body>
 

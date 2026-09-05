@@ -1,99 +1,179 @@
-const API_URL = "http://localhost:8080/Courses";
+const API_URL =
+    "http://localhost:8080/Courses";
 
 let selectedCourseId = null;
 
 const token = localStorage.getItem("token");
+const role = localStorage.getItem("role");
 
-if (!token) {
+
+if (!token || role !== "ADMIN") {
 
     window.location.href = "login.html";
 
 }
 
+
+/* =========================================================
+   HEADERS
+========================================================= */
+
 function getHeaders() {
 
-    const token = localStorage.getItem("token");
+    const token =
+        localStorage.getItem("token");
 
     return {
 
         "Content-Type": "application/json",
 
-        "Authorization": `Bearer ${token}`
+        "Authorization":
+            `Bearer ${token}`
 
     };
 
 }
 
+
+/* =========================================================
+   LOAD COURSES
+========================================================= */
+
 async function loadCourses() {
 
     try {
 
-        const response = await fetch(API_URL, {
+        const response =
+            await fetch(API_URL, {
 
-            headers: getHeaders()
+                headers: getHeaders()
 
-        });
+            });
+
 
         if (response.status === 401) {
 
             localStorage.removeItem("token");
+            localStorage.removeItem("role");
 
-            window.location.href = "login.html";
+            window.location.href =
+                "login.html";
 
             return;
 
         }
+
+
+        if (response.status === 403) {
+
+            showMessage(
+                "You do not have permission to manage courses."
+            );
+
+            return;
+
+        }
+
 
         if (!response.ok) {
 
-            showMessage("Failed to load courses");
+            showMessage(
+                "Failed to load courses."
+            );
 
             return;
 
         }
 
-        const courses = await response.json();
 
-        let table = document.getElementById("courseTable");
+        const courses =
+            await response.json();
+
+
+        const table =
+            document.getElementById(
+                "courseTable"
+            );
+
 
         table.innerHTML = "";
 
-        courses.forEach(course => {
 
-            let row = `
+        if (courses.length === 0) {
 
-            <tr>
+            table.innerHTML = `
 
-                <td>${course.id}</td>
+                <tr>
 
-                <td>${course.courseName}</td>
+                    <td
+                        colspan="6"
+                        style="text-align:center;"
+                    >
 
-                <td>${course.courseCode}</td>
+                        No courses found.
 
-                <td>${course.credits}</td>
+                    </td>
 
-                <td>${course.department}</td>
-
-                <td>
-
-                    <div class="action-buttons">
-
-                        <button onclick="editCourse(${course.id})">
-                            Edit
-                        </button>
-
-                        <button class="delete-btn"
-                                onclick="deleteCourse(${course.id})">
-                            Delete
-                        </button>
-
-                    </div>
-
-                </td>
-
-            </tr>
+                </tr>
 
             `;
+
+            return;
+
+        }
+
+
+        courses.forEach(course => {
+
+            const row = `
+
+                <tr>
+
+                    <td>
+                        ${course.id}
+                    </td>
+
+                    <td>
+                        ${course.courseName}
+                    </td>
+
+                    <td>
+                        ${course.courseCode}
+                    </td>
+
+                    <td>
+                        ${course.credits}
+                    </td>
+
+                    <td>
+                        ${course.department}
+                    </td>
+
+                    <td>
+
+                        <div class="action-buttons">
+
+                            <button
+                                onclick="editCourse(${course.id})"
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteCourse(${course.id})"
+                            >
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+
 
             table.innerHTML += row;
 
@@ -102,22 +182,32 @@ async function loadCourses() {
     }
     catch (error) {
 
-        console.log(error);
+        console.error(
+            "Error loading courses:",
+            error
+        );
 
-        showMessage("Server Error");
+        showMessage(
+            "Server error. Please try again."
+        );
 
     }
 
 }
 
-function saveCourse(){
 
-    if(selectedCourseId == null){
+/* =========================================================
+   SAVE COURSE
+========================================================= */
+
+function saveCourse() {
+
+    if (selectedCourseId === null) {
 
         addCourse();
 
     }
-    else{
+    else {
 
         updateCourse();
 
@@ -125,212 +215,499 @@ function saveCourse(){
 
 }
 
-function clearCourseForm(){
 
-    document.getElementById("courseName").value = "";
-    document.getElementById("courseCode").value = "";
-    document.getElementById("credits").value = "";
-    document.getElementById("department").value = "";
+/* =========================================================
+   CLEAR FORM
+========================================================= */
+
+function clearCourseForm() {
+
+    document.getElementById(
+        "courseName"
+    ).value = "";
+
+
+    document.getElementById(
+        "courseCode"
+    ).value = "";
+
+
+    document.getElementById(
+        "credits"
+    ).value = "";
+
+
+    document.getElementById(
+        "department"
+    ).value = "";
+
 
     selectedCourseId = null;
 
+
+    const button =
+        document.querySelector(
+            ".course-form button"
+        );
+
+
+    if (button) {
+
+        button.textContent =
+            "Add Course";
+
+    }
+
 }
 
-function addCourse(){
+
+/* =========================================================
+   ADD COURSE
+========================================================= */
+
+async function addCourse() {
 
     const course = {
 
         courseName:
-        document.getElementById("courseName").value,
+            document.getElementById(
+                "courseName"
+            ).value.trim(),
 
         courseCode:
-        document.getElementById("courseCode").value,
+            document.getElementById(
+                "courseCode"
+            ).value.trim(),
 
         credits:
-        document.getElementById("credits").value,
+            Number(
+                document.getElementById(
+                    "credits"
+                ).value
+            ),
 
         department:
-        document.getElementById("department").value
+            document.getElementById(
+                "department"
+            ).value.trim()
 
     };
 
-    fetch(API_URL,{
 
-        method:"POST",
+    if (
+        !course.courseName ||
+        !course.courseCode ||
+        !course.credits ||
+        !course.department
+    ) {
 
-        headers: getHeaders(),
+        showMessage(
+            "Please fill in all course fields."
+        );
 
-        body:JSON.stringify(course)
+        return;
 
-    })
+    }
 
-    .then(response=>{
 
-        if(response.ok){
+    try {
 
-            showMessage("Course added successfully!");
+        const response =
+            await fetch(API_URL, {
+
+                method: "POST",
+
+                headers: getHeaders(),
+
+                body:
+                    JSON.stringify(course)
+
+            });
+
+
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("role");
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        if (response.ok) {
+
+            showMessage(
+                "Course added successfully."
+            );
 
             clearCourseForm();
 
             loadCourses();
 
         }
-        else{
+        else {
 
-            showMessage("Failed to add course");
+            showMessage(
+                "Failed to add course."
+            );
 
         }
 
-    })
+    }
+    catch (error) {
 
-    .catch(error=>{
+        console.error(error);
 
-        console.log(error);
+        showMessage(
+            "Server error. Please try again."
+        );
 
-        showMessage("Server Error");
-
-    });
-
-}
-
-function showMessage(message){
-
-    let box = document.getElementById("message");
-
-    box.innerHTML = message;
-
-
-    setTimeout(()=>{
-
-        box.innerHTML="";
-
-    },3000);
+    }
 
 }
 
-function editCourse(id){
 
-    fetch(`${API_URL}/${id}`, {
+/* =========================================================
+   EDIT COURSE
+========================================================= */
 
-        headers: getHeaders()
+async function editCourse(id) {
 
-    })
+    try {
 
-    .then(response => response.json())
+        const response =
+            await fetch(
+                `${API_URL}/${id}`,
+                {
+                    headers: getHeaders()
+                }
+            );
 
-    .then(course => {
 
-        selectedCourseId = course.id;
+        if (response.status === 401) {
 
-        document.getElementById("courseName").value = course.courseName;
-        document.getElementById("courseCode").value = course.courseCode;
-        document.getElementById("credits").value = course.credits;
-        document.getElementById("department").value = course.department;
+            localStorage.removeItem("token");
+            localStorage.removeItem("role");
 
-    });
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        if (!response.ok) {
+
+            showMessage(
+                "Unable to load course."
+            );
+
+            return;
+
+        }
+
+
+        const course =
+            await response.json();
+
+
+        selectedCourseId =
+            course.id;
+
+
+        document.getElementById(
+            "courseName"
+        ).value =
+            course.courseName;
+
+
+        document.getElementById(
+            "courseCode"
+        ).value =
+            course.courseCode;
+
+
+        document.getElementById(
+            "credits"
+        ).value =
+            course.credits;
+
+
+        document.getElementById(
+            "department"
+        ).value =
+            course.department;
+
+
+        const button =
+            document.querySelector(
+                ".course-form button"
+            );
+
+
+        if (button) {
+
+            button.textContent =
+                "Update Course";
+
+        }
+
+
+        window.scrollTo({
+
+            top: 0,
+
+            behavior: "smooth"
+
+        });
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Server error. Please try again."
+        );
+
+    }
 
 }
 
-function updateCourse(){
+
+/* =========================================================
+   UPDATE COURSE
+========================================================= */
+
+async function updateCourse() {
 
     const course = {
 
         courseName:
-        document.getElementById("courseName").value,
+            document.getElementById(
+                "courseName"
+            ).value.trim(),
 
         courseCode:
-        document.getElementById("courseCode").value,
+            document.getElementById(
+                "courseCode"
+            ).value.trim(),
 
         credits:
-        document.getElementById("credits").value,
+            Number(
+                document.getElementById(
+                    "credits"
+                ).value
+            ),
 
         department:
-        document.getElementById("department").value
+            document.getElementById(
+                "department"
+            ).value.trim()
 
     };
 
-    fetch(`${API_URL}/${selectedCourseId}`, {
 
-        method:"PUT",
+    if (
+        !course.courseName ||
+        !course.courseCode ||
+        !course.credits ||
+        !course.department
+    ) {
 
-        headers: getHeaders(),
+        showMessage(
+            "Please fill in all course fields."
+        );
 
-        body:JSON.stringify(course)
+        return;
 
-    })
+    }
 
-    .then(response => {
 
-        if(response.ok){
+    try {
 
-            showMessage("Course updated successfully!");
+        const response =
+            await fetch(
+                `${API_URL}/${selectedCourseId}`,
+                {
+
+                    method: "PUT",
+
+                    headers: getHeaders(),
+
+                    body:
+                        JSON.stringify(course)
+
+                }
+            );
+
+
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("role");
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        if (response.ok) {
+
+            showMessage(
+                "Course updated successfully."
+            );
 
             clearCourseForm();
 
             loadCourses();
 
         }
-        else{
+        else {
 
-            showMessage("Failed to update course");
+            showMessage(
+                "Failed to update course."
+            );
 
         }
 
-    })
+    }
+    catch (error) {
 
-    .catch(error => {
+        console.error(error);
 
-        console.log(error);
+        showMessage(
+            "Server error. Please try again."
+        );
 
-        showMessage("Server Error");
-
-    });
+    }
 
 }
 
-function deleteCourse(id){
 
-    let confirmDelete = confirm(
-        "Are you sure you want to delete this course?"
-    );
+/* =========================================================
+   DELETE COURSE
+========================================================= */
 
-    if(!confirmDelete){
+async function deleteCourse(id) {
+
+    const confirmDelete =
+        confirm(
+            "Are you sure you want to delete this course?"
+        );
+
+
+    if (!confirmDelete) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/${id}`,
+                {
+
+                    method: "DELETE",
+
+                    headers: getHeaders()
+
+                }
+            );
+
+
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("role");
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        if (response.ok) {
+
+            showMessage(
+                "Course deleted successfully."
+            );
+
+            loadCourses();
+
+        }
+        else {
+
+            showMessage(
+                "Failed to delete course."
+            );
+
+        }
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Server error. Please try again."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(message) {
+
+    const box =
+        document.getElementById(
+            "message"
+        );
+
+
+    if (!box) {
         return;
     }
 
-    fetch(`${API_URL}/${id}`, {
 
-        method:"DELETE",
+    box.textContent =
+        message;
 
-        headers: getHeaders()
 
-    })
+    box.style.opacity =
+        "1";
 
-    .then(response => {
 
-        if(response.ok){
+    setTimeout(() => {
 
-            showMessage("Course deleted successfully!");
+        box.style.opacity =
+            "0";
 
-            loadCourses();
-
-        }
-        else{
-
-            showMessage("Failed to delete course");
-
-        }
-
-    })
-
-    .catch(error => {
-
-        console.log(error);
-
-        showMessage("Server Error");
-
-    });
+    }, 3000);
 
 }
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
 
 loadCourses();

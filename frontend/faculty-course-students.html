@@ -5,6 +5,9 @@
 
     <meta charset="UTF-8">
 
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Course Students - UniFlow</title>
 
     <link rel="stylesheet" href="style.css">
@@ -17,31 +20,80 @@
 
     <h2>UniFlow</h2>
 
-    <button onclick="logout()">
+    <button
+            type="button"
+            onclick="logout()">
         Logout
     </button>
 
 </nav>
 
+
 <div class="container">
 
-    <h1 id="courseTitle">
-        Course Students 👨‍🎓
-    </h1>
+    <!-- PAGE TITLE -->
 
-    <div id="studentContainer">
+    <div class="page-title">
 
-        <p>Loading students...</p>
+        <h1 id="courseTitle">
+            Course Students
+        </h1>
+
+        <p>
+            Students enrolled in this course.
+        </p>
 
     </div>
 
-    <br>
 
-    <button onclick="goBack()">
-        Back to My Courses
-    </button>
+    <!-- SEARCH -->
+
+    <div class="student-search course-student-search">
+
+        <input
+                type="text"
+                id="studentSearch"
+                placeholder="Search students..."
+                autocomplete="off"
+        >
+
+    </div>
+
+    <!-- STUDENTS -->
+
+    <div id="studentContainer">
+
+        <div class="empty-message">
+
+            <h3>
+                Loading students...
+            </h3>
+
+            <p>
+                Please wait while the student list is loaded.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- BACK BUTTON -->
+
+    <div style="margin-top: 25px;">
+
+        <button
+                type="button"
+                onclick="goBack()">
+
+            Back to My Courses
+
+        </button>
+
+    </div>
 
 </div>
+
 
 <script src="faculty-course-students.js"></script>
 

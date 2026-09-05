@@ -1,12 +1,19 @@
 const BASE_URL = "http://localhost:8080";
 
 const token = localStorage.getItem("token");
+const role = localStorage.getItem("role");
 
-if (!token) {
+
+// Protect admin dashboard
+
+if (!token || role !== "ADMIN") {
 
     window.location.href = "login.html";
 
 }
+
+
+// Common headers
 
 function getHeaders() {
 
@@ -20,76 +27,156 @@ function getHeaders() {
 
 }
 
-loadStats();
+
+// Load dashboard statistics
 
 async function loadStats() {
 
     try {
 
-        const students = await fetch(BASE_URL + "/Students", {
-
-            headers: getHeaders()
-
-        });
-
-        if (!students.ok) {
-
-            console.log("Students:", students.status);
-
-            return;
-
-        }
-
-        const studentData = await students.json();
-
-        document.getElementById("studentCount").innerHTML =
-            studentData.length;
+        const studentsResponse =
+            await fetch(
+                BASE_URL + "/Students",
+                {
+                    headers: getHeaders()
+                }
+            );
 
 
-        const courses = await fetch(BASE_URL + "/Courses", {
+        if (studentsResponse.status === 401) {
 
-            headers: getHeaders()
-
-        });
-
-        if (!courses.ok) {
-
-            console.log("Courses:", courses.status);
+            logout();
 
             return;
 
         }
 
-        const courseData = await courses.json();
 
-        document.getElementById("courseCount").innerHTML =
-            courseData.length;
+        if (!studentsResponse.ok) {
 
-
-        const enrollments = await fetch(BASE_URL + "/enrollments", {
-
-            headers: getHeaders()
-
-        });
-
-        if (!enrollments.ok) {
-
-            console.log("Enrollments:", enrollments.status);
+            console.error(
+                "Students:",
+                studentsResponse.status
+            );
 
             return;
 
         }
 
-        const enrollmentData = await enrollments.json();
 
-        document.getElementById("enrollmentCount").innerHTML =
+        const studentData =
+            await studentsResponse.json();
+
+
+        document.getElementById(
+            "studentCount"
+        ).textContent = studentData.length;
+
+
+        const coursesResponse =
+            await fetch(
+                BASE_URL + "/Courses",
+                {
+                    headers: getHeaders()
+                }
+            );
+
+
+        if (coursesResponse.status === 401) {
+
+            logout();
+
+            return;
+
+        }
+
+
+        if (!coursesResponse.ok) {
+
+            console.error(
+                "Courses:",
+                coursesResponse.status
+            );
+
+            return;
+
+        }
+
+
+        const courseData =
+            await coursesResponse.json();
+
+
+        document.getElementById(
+            "courseCount"
+        ).textContent = courseData.length;
+
+
+        const enrollmentsResponse =
+            await fetch(
+                BASE_URL + "/enrollments",
+                {
+                    headers: getHeaders()
+                }
+            );
+
+
+        if (enrollmentsResponse.status === 401) {
+
+            logout();
+
+            return;
+
+        }
+
+
+        if (!enrollmentsResponse.ok) {
+
+            console.error(
+                "Enrollments:",
+                enrollmentsResponse.status
+            );
+
+            return;
+
+        }
+
+
+        const enrollmentData =
+            await enrollmentsResponse.json();
+
+
+        document.getElementById(
+            "enrollmentCount"
+        ).textContent =
             enrollmentData.length;
 
     }
     catch (error) {
 
-        console.log(error);
+        console.error(
+            "Error loading dashboard statistics:",
+            error
+        );
 
     }
 
 }
+
+
+// Logout
+
+function logout() {
+
+    localStorage.removeItem("token");
+
+    localStorage.removeItem("role");
+
+    window.location.href = "login.html";
+
+}
+
+
+// Start
+
+loadStats();

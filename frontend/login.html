@@ -1,7 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>UniFlow Login</title>
 
@@ -11,26 +16,33 @@
 
 <body>
 
-<h1>UniFlow ERP</h1>
+<div class="form-container">
 
-<h2>Login</h2>
+    <h1>UniFlow ERP</h1>
 
-<input
-        id="username"
-        placeholder="Username"
->
+    <h2>Login</h2>
 
-<input
-        id="password"
-        type="password"
-        placeholder="Password"
->
+    <input
+            id="username"
+            type="text"
+            placeholder="Username"
+    >
 
-<button onclick="login()">
-    Login
-</button>
+    <input
+            id="password"
+            type="password"
+            placeholder="Password"
+    >
 
-<p id="message"></p>
+    <button
+            type="button"
+            onclick="login()">
+        Login
+    </button>
+
+    <div id="message" class="login-message"></div>
+
+</div>
 
 <script src="login.js"></script>
 

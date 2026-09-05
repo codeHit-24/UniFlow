@@ -1,460 +1,882 @@
 const API_URL = "http://localhost:8080/Students";
 
 let selectedStudentId = null;
-
 let students = [];
 
 const token = localStorage.getItem("token");
 
 if (!token) {
-
     window.location.href = "login.html";
-
 }
+
+
+/* =========================================================
+   AUTHORIZATION HEADERS
+========================================================= */
 
 function getHeaders() {
 
     const token = localStorage.getItem("token");
 
     return {
-
         "Content-Type": "application/json",
-
         "Authorization": `Bearer ${token}`
-
     };
-
 }
+
+
+/* =========================================================
+   LOAD STUDENTS
+========================================================= */
 
 async function loadStudents() {
 
-    const response = await fetch(API_URL, {
+    try {
 
-        headers: getHeaders()
+        const response = await fetch(API_URL, {
+            headers: getHeaders()
+        });
 
-    });
 
-    if (response.status === 401) {
+        if (response.status === 401) {
 
-        localStorage.removeItem("token");
+            localStorage.removeItem("token");
 
-        window.location.href = "login.html";
+            window.location.href = "login.html";
 
-        return;
+            return;
+        }
+
+
+        if (response.status === 403) {
+
+            showMessage(
+                "You do not have permission to view students.",
+                "#dc3545"
+            );
+
+            return;
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load students"
+            );
+        }
+
+
+        const data = await response.json();
+
+        students = data;
+
+        displayStudents(data);
 
     }
+    catch (error) {
 
-    const data = await response.json();
+        console.error(
+            "Error loading students:",
+            error
+        );
 
-    students = data;
-
-    displayStudents(data);
-
+        showMessage(
+            "Unable to load students.",
+            "#dc3545"
+        );
+    }
 }
 
-function addStudent(){
 
-    const firstName = document.getElementById("firstName").value.trim();
-    const lastName = document.getElementById("lastName").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const department = document.getElementById("department").value.trim();
-    const semester = document.getElementById("semester").value.trim();
+/* =========================================================
+   ADD STUDENT
+========================================================= */
 
-    if(
+async function addStudent() {
+
+    const firstName =
+        document.getElementById("firstName")
+            .value.trim();
+
+    const lastName =
+        document.getElementById("lastName")
+            .value.trim();
+
+    const email =
+        document.getElementById("email")
+            .value.trim();
+
+    const department =
+        document.getElementById("department")
+            .value.trim();
+
+    const semester =
+        document.getElementById("semester")
+            .value.trim();
+
+
+    /* Validation */
+
+    if (
         !firstName ||
         !lastName ||
         !email ||
         !department ||
         !semester
-    ){
+    ) {
 
-        showMessage("Please fill all fields", "#dc3545");
+        showMessage(
+            "Please fill all fields.",
+            "#dc3545"
+        );
 
         return;
     }
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if(!emailPattern.test(email)){
+    const emailPattern =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        showMessage("Invalid email address","#dc3545");
 
-        return;
+    if (!emailPattern.test(email)) {
 
-    }
-
-    if(semester < 1 || semester > 8){
-
-        showMessage("Semester must be between 1 and 8","#dc3545");
+        showMessage(
+            "Please enter a valid email address.",
+            "#dc3545"
+        );
 
         return;
-
     }
+
+
+    if (
+        Number(semester) < 1 ||
+        Number(semester) > 8
+    ) {
+
+        showMessage(
+            "Semester must be between 1 and 8.",
+            "#dc3545"
+        );
+
+        return;
+    }
+
 
     const student = {
 
         firstName,
-
         lastName,
-
         email,
-
         department,
-
         semester
 
     };
 
-    const saveBtn = document.getElementById("saveBtn");
+
+    const saveBtn =
+        document.getElementById("saveBtn");
+
 
     saveBtn.disabled = true;
 
-    saveBtn.innerHTML = "Saving...";
+    saveBtn.textContent = "Saving...";
 
-    fetch("http://localhost:8080/Students", {
 
-        method:"POST",
+    try {
 
-        headers: getHeaders(),
+        const response = await fetch(
+            API_URL,
+            {
+                method: "POST",
+                headers: getHeaders(),
+                body: JSON.stringify(student)
+            }
+        );
 
-        body:JSON.stringify(student)
 
-    })
+        if (response.status === 401) {
 
-    .then(response => {
+            localStorage.removeItem("token");
 
-        if(response.ok){
+            window.location.href =
+                "login.html";
 
-            showMessage("Student added successfully");
-
-            clearForm();
-
-            loadStudents();
-
-            saveBtn.disabled = false;
-
-            saveBtn.innerHTML = "Add Student";
-
-        }
-        else{
-
-            showMessage("Failed to add student");
-
-            saveBtn.disabled = false;
-
-            saveBtn.innerHTML = "Add Student";
-
+            return;
         }
 
-    })
 
-    .catch(error => {
+        if (response.status === 403) {
 
-        console.log(error);
+            showMessage(
+                "You do not have permission to add students.",
+                "#dc3545"
+            );
 
-        showMessage("Server error");
+            return;
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to add student"
+            );
+        }
+
+
+        showMessage(
+            "Student added successfully."
+        );
+
+
+        clearForm();
+
+        await loadStudents();
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Failed to add student.",
+            "#dc3545"
+        );
+
+    }
+    finally {
 
         saveBtn.disabled = false;
 
-        saveBtn.innerHTML = "Add Student";
-
-    });
-
-}
-
-function deleteStudent(id){
-
-    let confirmDelete = confirm(
-        "Are you sure you want to delete this student?"
-    );
-
-
-    if(!confirmDelete){
-        return;
+        saveBtn.textContent =
+            "Save Student";
     }
-
-
-    fetch(`http://localhost:8080/Students/${id}`,{
-
-        method:"DELETE",
-
-        headers: getHeaders()
-
-    })
-
-    .then(response => {
-
-        console.log("Delete status:", response.status);
-
-
-        if(response.ok){
-
-            showMessage("Student deleted successfully", "#dc3545");
-
-            loadStudents();
-
-        }
-        else{
-
-            showMessage("Delete failed");
-
-        }
-
-    })
-
-    .catch(error => {
-
-        console.log(error);
-
-        showMessage("Server error");
-
-    });
-
 }
 
-function editStudent(id){
 
-    fetch(`http://localhost:8080/Students/${id}`, {
+/* =========================================================
+   SAVE STUDENT
+========================================================= */
 
-        headers: getHeaders()
+function saveStudent() {
 
-    })
-
-    .then(response => response.json())
-
-    .then(student => {
-
-
-        selectedStudentId = student.id;
-
-
-        document.getElementById("firstName").value =
-            student.firstName;
-
-
-        document.getElementById("lastName").value =
-            student.lastName;
-
-
-        document.getElementById("email").value =
-            student.email;
-
-
-        document.getElementById("department").value =
-            student.department;
-
-
-        document.getElementById("semester").value =
-            student.semester;
-
-
-    });
-
-}
-
-function saveStudent(){
-
-    if(selectedStudentId === null){
+    if (selectedStudentId === null) {
 
         addStudent();
 
     }
-    else{
+    else {
 
         updateStudent();
 
     }
-
 }
 
-function updateStudent(){
+
+/* =========================================================
+   EDIT STUDENT
+========================================================= */
+
+async function editStudent(id) {
+
+    try {
+
+        const response = await fetch(
+            `${API_URL}/${id}`,
+            {
+                headers: getHeaders()
+            }
+        );
+
+
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load student"
+            );
+        }
+
+
+        const student =
+            await response.json();
+
+
+        selectedStudentId =
+            student.id;
+
+
+        document.getElementById(
+            "firstName"
+        ).value =
+            student.firstName;
+
+
+        document.getElementById(
+            "lastName"
+        ).value =
+            student.lastName;
+
+
+        document.getElementById(
+            "email"
+        ).value =
+            student.email;
+
+
+        document.getElementById(
+            "department"
+        ).value =
+            student.department;
+
+
+        document.getElementById(
+            "semester"
+        ).value =
+            student.semester;
+
+
+        /* Change form heading */
+
+        document.getElementById(
+            "formTitle"
+        ).textContent =
+            "Edit Student";
+
+
+        /* Change button */
+
+        document.getElementById(
+            "saveBtn"
+        ).textContent =
+            "Update Student";
+
+
+        /* Scroll to form */
+
+        document.querySelector(
+            ".student-form-panel"
+        ).scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Unable to load student.",
+            "#dc3545"
+        );
+    }
+}
+
+
+/* =========================================================
+   UPDATE STUDENT
+========================================================= */
+
+async function updateStudent() {
+
+    const firstName =
+        document.getElementById("firstName")
+            .value.trim();
+
+    const lastName =
+        document.getElementById("lastName")
+            .value.trim();
+
+    const email =
+        document.getElementById("email")
+            .value.trim();
+
+    const department =
+        document.getElementById("department")
+            .value.trim();
+
+    const semester =
+        document.getElementById("semester")
+            .value.trim();
+
+
+    if (
+        !firstName ||
+        !lastName ||
+        !email ||
+        !department ||
+        !semester
+    ) {
+
+        showMessage(
+            "Please fill all fields.",
+            "#dc3545"
+        );
+
+        return;
+    }
+
+
+    const emailPattern =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+    if (!emailPattern.test(email)) {
+
+        showMessage(
+            "Please enter a valid email address.",
+            "#dc3545"
+        );
+
+        return;
+    }
+
+
+    if (
+        Number(semester) < 1 ||
+        Number(semester) > 8
+    ) {
+
+        showMessage(
+            "Semester must be between 1 and 8.",
+            "#dc3545"
+        );
+
+        return;
+    }
+
 
     const student = {
 
-        firstName:
-        document.getElementById("firstName").value,
-
-        lastName:
-        document.getElementById("lastName").value,
-
-        email:
-        document.getElementById("email").value,
-
-        department:
-        document.getElementById("department").value,
-
-        semester:
-        document.getElementById("semester").value
+        firstName,
+        lastName,
+        email,
+        department,
+        semester
 
     };
 
-    const saveBtn = document.getElementById("saveBtn");
+
+    const saveBtn =
+        document.getElementById("saveBtn");
+
 
     saveBtn.disabled = true;
 
-    saveBtn.innerHTML = "Updating...";
+    saveBtn.textContent =
+        "Updating...";
 
 
-    fetch(
-        `http://localhost:8080/Students/${selectedStudentId}`,
-        {
+    try {
 
-        method:"PUT",
+        const response = await fetch(
+            `${API_URL}/${selectedStudentId}`,
+            {
+                method: "PUT",
+                headers: getHeaders(),
+                body: JSON.stringify(student)
+            }
+        );
 
-        headers: getHeaders(),
 
-        body:JSON.stringify(student)
+        if (response.status === 401) {
 
-    })
+            localStorage.removeItem("token");
 
-    .then(response => {
+            window.location.href =
+                "login.html";
 
-        if(response.ok){
-
-            showMessage("Student updated successfully!");
-
-            clearForm();
-
-            loadStudents();
-
-            saveBtn.disabled = false;
-
-            saveBtn.innerHTML = "Save Student";
-
-        }
-        else{
-
-            showMessage("Failed to update student");
-
-            saveBtn.disabled = false;
-
-            saveBtn.innerHTML = "Save Student";
-
+            return;
         }
 
-    })
 
-    .catch(error => {
+        if (response.status === 403) {
 
-        console.log(error);
+            showMessage(
+                "You do not have permission to update students.",
+                "#dc3545"
+            );
 
-        showMessage("Server error");
+            return;
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to update student"
+            );
+        }
+
+
+        showMessage(
+            "Student updated successfully."
+        );
+
+
+        clearForm();
+
+        await loadStudents();
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Failed to update student.",
+            "#dc3545"
+        );
+
+    }
+    finally {
 
         saveBtn.disabled = false;
 
-        saveBtn.innerHTML = "Save Student";
-
-    });
-
+        saveBtn.textContent =
+            "Save Student";
+    }
 }
 
-function clearForm(){
 
-    document.getElementById("firstName").value = "";
-    document.getElementById("lastName").value = "";
-    document.getElementById("email").value = "";
-    document.getElementById("department").value = "";
-    document.getElementById("semester").value = "";
+/* =========================================================
+   DELETE STUDENT
+========================================================= */
+
+async function deleteStudent(id) {
+
+    const confirmDelete =
+        confirm(
+            "Are you sure you want to delete this student?"
+        );
+
+
+    if (!confirmDelete) {
+        return;
+    }
+
+
+    try {
+
+        const response = await fetch(
+            `${API_URL}/${id}`,
+            {
+                method: "DELETE",
+                headers: getHeaders()
+            }
+        );
+
+
+        if (response.status === 401) {
+
+            localStorage.removeItem("token");
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+
+        if (response.status === 403) {
+
+            showMessage(
+                "You do not have permission to delete students.",
+                "#dc3545"
+            );
+
+            return;
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to delete student"
+            );
+        }
+
+
+        showMessage(
+            "Student deleted successfully."
+        );
+
+
+        await loadStudents();
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Failed to delete student.",
+            "#dc3545"
+        );
+    }
+}
+
+
+/* =========================================================
+   CLEAR FORM
+========================================================= */
+
+function clearForm() {
+
+    document.getElementById(
+        "firstName"
+    ).value = "";
+
+
+    document.getElementById(
+        "lastName"
+    ).value = "";
+
+
+    document.getElementById(
+        "email"
+    ).value = "";
+
+
+    document.getElementById(
+        "department"
+    ).value = "";
+
+
+    document.getElementById(
+        "semester"
+    ).value = "";
+
 
     selectedStudentId = null;
 
+
+    document.getElementById(
+        "formTitle"
+    ).textContent =
+        "Add Student";
+
+
+    document.getElementById(
+        "saveBtn"
+    ).textContent =
+        "Save Student";
 }
 
-function showMessage(message, color = "#16a34a") {
 
-    let box = document.getElementById("message");
+/* =========================================================
+   DISPLAY STUDENTS
+========================================================= */
 
-    box.innerHTML = message;
+function displayStudents(studentList) {
+
+    const table =
+        document.getElementById(
+            "studentTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    if (studentList.length === 0) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    style="text-align:center; padding:30px;"
+                >
+
+                    No students found.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+    }
+
+
+    studentList.forEach(student => {
+
+        const row = `
+
+            <tr>
+
+                <td>
+                    ${student.id}
+                </td>
+
+
+                <td>
+
+                    <strong>
+                        ${student.firstName}
+                        ${student.lastName}
+                    </strong>
+
+                </td>
+
+
+                <td>
+                    ${student.email}
+                </td>
+
+
+                <td>
+                    ${student.department}
+                </td>
+
+
+                <td>
+                    ${student.semester}
+                </td>
+
+
+                <td>
+
+                    <div class="action-buttons">
+
+                        <button
+                            onclick="editStudent(${student.id})">
+
+                            Edit
+
+                        </button>
+
+
+                        <button
+                            class="delete-btn"
+                            onclick="deleteStudent(${student.id})">
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        table.innerHTML += row;
+    });
+}
+
+
+/* =========================================================
+   SEARCH STUDENTS
+========================================================= */
+
+function searchStudent() {
+
+    const keyword =
+        document.getElementById(
+            "searchInput"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const filtered =
+        students.filter(student => {
+
+            const fullName =
+                `${student.firstName} ${student.lastName}`
+                    .toLowerCase();
+
+
+            const email =
+                student.email
+                    .toLowerCase();
+
+
+            const department =
+                student.department
+                    .toLowerCase();
+
+
+            return (
+                fullName.includes(keyword) ||
+                email.includes(keyword) ||
+                department.includes(keyword)
+            );
+
+        });
+
+
+    displayStudents(filtered);
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(
+    message,
+    color = "#16a34a"
+) {
+
+    const box =
+        document.getElementById(
+            "message"
+        );
+
+
+    box.textContent = message;
 
     box.style.background = color;
 
     box.style.opacity = "1";
+
 
     setTimeout(() => {
 
         box.style.opacity = "0";
 
     }, 2500);
-
 }
 
-function displayStudents(studentList) {
 
-    let table = document.getElementById("studentTable");
-
-    table.innerHTML = "";
-
-    studentList.forEach(student => {
-
-        let row = `
-
-        <tr>
-
-            <td>${student.id}</td>
-
-            <td>
-                ${student.firstName}
-                ${student.lastName}
-            </td>
-
-            <td>${student.email}</td>
-
-            <td>${student.department}</td>
-
-            <td>${student.semester}</td>
-
-            <td>
-
-                <div class="action-buttons">
-
-                    <button onclick="editStudent(${student.id})">
-                        Edit
-                    </button>
-
-                    <button class="delete-btn"
-                        onclick="deleteStudent(${student.id})">
-                        Delete
-                    </button>
-
-                </div>
-
-            </td>
-
-        </tr>
-
-        `;
-
-        table.innerHTML += row;
-
-    });
-
-}
-
-function searchStudent() {
-
-    const keyword = document
-        .getElementById("searchInput")
-        .value
-        .toLowerCase();
-
-    const filtered = students.filter(student =>
-
-        (student.firstName + " " + student.lastName)
-            .toLowerCase()
-            .includes(keyword)
-
-    );
-
-    displayStudents(filtered);
-
-}
+/* =========================================================
+   LOGOUT
+========================================================= */
 
 function logout() {
 
     localStorage.removeItem("token");
 
-    window.location.href = "login.html";
+    localStorage.removeItem("role");
 
+    window.location.href =
+        "login.html";
 }
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
 
 loadStudents();

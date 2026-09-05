@@ -5,6 +5,8 @@
 
     <meta charset="UTF-8">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>My Students - UniFlow</title>
 
     <link rel="stylesheet" href="style.css">
@@ -13,37 +15,209 @@
 
 <body>
 
-<nav class="navbar">
+<div class="app-layout">
 
-    <h2>UniFlow</h2>
+    <!-- Sidebar -->
+    <aside class="sidebar">
 
-    <button onclick="logout()">
-        Logout
-    </button>
+        <div class="brand">
 
-</nav>
+            <div class="brand-logo">
+                U
+            </div>
 
-<div class="container">
+            <div>
+                <h2>UniFlow</h2>
+                <span>College ERP</span>
+            </div>
 
-    <h1>My Students 👨‍🎓</h1>
+        </div>
 
-    <p>
-        Students enrolled in your courses.
-    </p>
 
-    <div id="studentContainer">
+        <div class="sidebar-user">
 
-        <p>Loading students...</p>
+            <div class="user-avatar">
+                F
+            </div>
 
-    </div>
+            <div>
+                <strong>Faculty</strong>
+                <span>Faculty Portal</span>
+            </div>
 
-    <br>
+        </div>
 
-    <button onclick="goBack()">
-        Back to Dashboard
-    </button>
+
+        <div class="sidebar-section">
+
+            <p class="sidebar-heading">
+                MAIN
+            </p>
+
+            <a href="faculty-dashboard.html"
+               class="sidebar-link">
+
+                <span class="sidebar-icon">▦</span>
+
+                Dashboard
+
+            </a>
+
+
+            <a href="faculty-courses.html"
+               class="sidebar-link">
+
+                <span class="sidebar-icon">▣</span>
+
+                My Courses
+
+            </a>
+
+
+            <a href="my-students.html"
+               class="sidebar-link active">
+
+                <span class="sidebar-icon">♙</span>
+
+                My Students
+
+            </a>
+
+
+            <a href="faculty-statistics.html"
+               class="sidebar-link">
+
+                <span class="sidebar-icon">▥</span>
+
+                Statistics
+
+            </a>
+
+        </div>
+
+
+        <div class="sidebar-section">
+
+            <p class="sidebar-heading">
+                ACCOUNT
+            </p>
+
+            <a href="#"
+               class="sidebar-link"
+               onclick="logout()">
+
+                <span class="sidebar-icon">↪</span>
+
+                Logout
+
+            </a>
+
+        </div>
+
+
+        <div class="sidebar-footer">
+
+            <strong>UniFlow ERP</strong>
+
+            <span>
+                Faculty Management System
+            </span>
+
+            <small>
+                © 2026 UniFlow
+            </small>
+
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <div class="page-header">
+
+            <div>
+
+                <p class="page-eyebrow">
+                    FACULTY PORTAL
+                </p>
+
+                <h1>
+                    My Students
+                </h1>
+
+                <p class="page-subtitle">
+                    View students enrolled in your assigned courses.
+                </p>
+
+            </div>
+
+            <button
+                    class="secondary-button"
+                    onclick="goBack()">
+
+                Back to Dashboard
+
+            </button>
+
+        </div>
+
+
+        <section class="content-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Enrolled Students
+                    </h2>
+
+                    <p>
+                        Students currently enrolled in your courses.
+                    </p>
+
+                </div>
+
+
+                <!-- Search Students -->
+                <div class="student-search">
+
+                    <input
+                            type="text"
+                            id="studentSearch"
+                            placeholder="Search students..."
+                            oninput="searchStudents()"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div id="studentContainer"
+                 class="students-grid">
+
+                <div class="loading-card">
+
+                    <p>
+                        Loading students...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <div id="message"></div>
+
+
+    </main>
 
 </div>
+
 
 <script src="faculty-students.js"></script>
 

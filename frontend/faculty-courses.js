@@ -5,12 +5,20 @@ const token = localStorage.getItem("token");
 const role = localStorage.getItem("role");
 
 
+// --------------------------------------------------
+// FACULTY AUTHENTICATION
+// --------------------------------------------------
+
 if (!token || role !== "FACULTY") {
 
     window.location.href = "login.html";
 
 }
 
+
+// --------------------------------------------------
+// LOAD FACULTY COURSES
+// --------------------------------------------------
 
 async function loadMyCourses() {
 
@@ -19,15 +27,22 @@ async function loadMyCourses() {
 
     try {
 
-        const response = await fetch(COURSES_API, {
+        const response = await fetch(
+            COURSES_API,
+            {
+                method: "GET",
 
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
             }
+        );
 
-        });
 
+        // ------------------------------------------
+        // UNAUTHORIZED
+        // ------------------------------------------
 
         if (response.status === 401) {
 
@@ -41,26 +56,51 @@ async function loadMyCourses() {
         }
 
 
+        // ------------------------------------------
+        // FORBIDDEN
+        // ------------------------------------------
+
         if (response.status === 403) {
 
             container.innerHTML = `
-                <p>
-                    You do not have permission to view
-                    these courses.
-                </p>
+
+                <div class="empty-message">
+
+                    <h3>Access denied</h3>
+
+                    <p>
+                        You do not have permission to view
+                        your assigned courses.
+                    </p>
+
+                </div>
+
             `;
 
             return;
 
         }
 
+
+        // ------------------------------------------
+        // OTHER SERVER ERRORS
+        // ------------------------------------------
 
         if (!response.ok) {
 
             container.innerHTML = `
-                <p>
-                    Failed to load courses.
-                </p>
+
+                <div class="empty-message">
+
+                    <h3>Unable to load courses</h3>
+
+                    <p>
+                        Failed to load your courses.
+                        Please try again later.
+                    </p>
+
+                </div>
+
             `;
 
             return;
@@ -68,15 +108,22 @@ async function loadMyCourses() {
         }
 
 
-        const courses = await response.json();
+        const courses =
+            await response.json();
 
 
-        if (courses.length === 0) {
+        // ------------------------------------------
+        // NO COURSES
+        // ------------------------------------------
+
+        if (!Array.isArray(courses) ||
+            courses.length === 0) {
 
             container.innerHTML = `
+
                 <div class="empty-message">
 
-                    <h3>No courses assigned 📚</h3>
+                    <h3>No courses assigned</h3>
 
                     <p>
                         You currently have no courses
@@ -84,12 +131,17 @@ async function loadMyCourses() {
                     </p>
 
                 </div>
+
             `;
 
             return;
 
         }
 
+
+        // ------------------------------------------
+        // DISPLAY COURSES
+        // ------------------------------------------
 
         container.innerHTML = "";
 
@@ -120,8 +172,9 @@ async function loadMyCourses() {
                     </p>
 
                     <button
+                        type="button"
                         onclick="viewStudents(${course.id})">
-                        View Students 👨‍🎓
+                        View Students
                     </button>
 
                 </div>
@@ -129,6 +182,7 @@ async function loadMyCourses() {
             `;
 
         });
+
 
     }
     catch (error) {
@@ -138,23 +192,48 @@ async function loadMyCourses() {
             error
         );
 
+
         container.innerHTML = `
-            <p>
-                Server error. Please try again.
-            </p>
+
+            <div class="empty-message">
+
+                <h3>Server error</h3>
+
+                <p>
+                    Unable to connect to the server.
+                    Please try again.
+                </p>
+
+            </div>
+
         `;
 
     }
 
 }
 
+
+// --------------------------------------------------
+// VIEW COURSE STUDENTS
+// --------------------------------------------------
+
 function viewStudents(courseId) {
+
+    if (!courseId) {
+
+        return;
+
+    }
 
     window.location.href =
         `faculty-course-students.html?courseId=${courseId}`;
 
 }
 
+
+// --------------------------------------------------
+// BACK TO FACULTY DASHBOARD
+// --------------------------------------------------
 
 function goBack() {
 
@@ -163,6 +242,10 @@ function goBack() {
 
 }
 
+
+// --------------------------------------------------
+// LOGOUT
+// --------------------------------------------------
 
 function logout() {
 
@@ -174,5 +257,9 @@ function logout() {
 
 }
 
+
+// --------------------------------------------------
+// INITIALIZE
+// --------------------------------------------------
 
 loadMyCourses();

@@ -5,6 +5,9 @@
 
     <meta charset="UTF-8">
 
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Faculty Statistics - UniFlow</title>
 
     <link rel="stylesheet" href="style.css">
@@ -13,61 +16,266 @@
 
 <body>
 
-<nav class="navbar">
+<div class="app-layout">
 
-    <h2>UniFlow</h2>
+    <!-- Sidebar -->
+    <aside class="sidebar">
 
-    <button onclick="logout()">
-        Logout
-    </button>
+        <div class="brand">
 
-</nav>
+            <div class="brand-logo">
+                U
+            </div>
 
-<div class="container">
-
-    <h1>Faculty Statistics 📊</h1>
-
-    <p>
-        Overview of your courses and students.
-    </p>
-
-    <div class="stats-container">
-
-        <div class="stat-card">
-
-            <h2 id="courseCount">0</h2>
-
-            <p>Total Courses</p>
+            <div>
+                <h2>UniFlow</h2>
+                <span>College ERP</span>
+            </div>
 
         </div>
 
 
-        <div class="stat-card">
+        <div class="sidebar-user">
 
-            <h2 id="studentCount">0</h2>
+            <div class="user-avatar">
+                F
+            </div>
 
-            <p>Total Students</p>
+            <div>
+                <strong>Faculty</strong>
+                <span>Faculty Portal</span>
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-section">
+
+            <p class="sidebar-heading">
+                MAIN
+            </p>
+
+            <a href="faculty-dashboard.html"
+               class="sidebar-link">
+
+                <span class="sidebar-icon">▦</span>
+
+                Dashboard
+
+            </a>
+
+
+            <a href="faculty-courses.html"
+               class="sidebar-link">
+
+                <span class="sidebar-icon">▣</span>
+
+                My Courses
+
+            </a>
+
+
+            <a href="faculty-students.html"
+               class="sidebar-link">
+
+                <span class="sidebar-icon">♙</span>
+
+                My Students
+
+            </a>
+
+
+            <a href="faculty-statistics.html"
+               class="sidebar-link active">
+
+                <span class="sidebar-icon">▥</span>
+
+                Statistics
+
+            </a>
 
         </div>
 
 
-        <div class="stat-card">
+        <div class="sidebar-section">
 
-            <h2 id="enrollmentCount">0</h2>
+            <p class="sidebar-heading">
+                ACCOUNT
+            </p>
 
-            <p>Total Enrollments</p>
+            <a href="#"
+               class="sidebar-link"
+               onclick="logout()">
+
+                <span class="sidebar-icon">↪</span>
+
+                Logout
+
+            </a>
 
         </div>
 
-    </div>
 
-    <br>
+        <div class="sidebar-footer">
 
-    <button onclick="goBack()">
-        Back to Dashboard
-    </button>
+            <strong>UniFlow ERP</strong>
+
+            <span>
+                Faculty Management System
+            </span>
+
+            <small>
+                © 2026 UniFlow
+            </small>
+
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <div class="page-header">
+
+            <div>
+
+                <p class="page-eyebrow">
+                    FACULTY PORTAL
+                </p>
+
+                <h1>
+                    Statistics
+                </h1>
+
+                <p class="page-subtitle">
+                    Overview of your courses, students,
+                    and enrollment activity.
+                </p>
+
+            </div>
+
+
+            <button
+                    class="secondary-button"
+                    onclick="goBack()">
+
+                Back to Dashboard
+
+            </button>
+
+        </div>
+
+
+        <section class="content-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Academic Overview
+                    </h2>
+
+                    <p>
+                        A summary of your current faculty activity.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="statistics-grid">
+
+                <!-- Total Courses -->
+                <div class="stat-card">
+
+                    <div class="stat-icon blue-icon">
+                        ▣
+                    </div>
+
+                    <div class="stat-content">
+
+                        <span>
+                            Total Courses
+                        </span>
+
+                        <strong id="courseCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <p>
+                        Courses assigned to you
+                    </p>
+
+                </div>
+
+
+                <!-- Total Students -->
+                <div class="stat-card">
+
+                    <div class="stat-icon green-icon">
+                        ♙
+                    </div>
+
+                    <div class="stat-content">
+
+                        <span>
+                            Total Students
+                        </span>
+
+                        <strong id="studentCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <p>
+                        Students enrolled in your courses
+                    </p>
+
+                </div>
+
+
+                <!-- Total Enrollments -->
+                <div class="stat-card">
+
+                    <div class="stat-icon purple-icon">
+                        ≡
+                    </div>
+
+                    <div class="stat-content">
+
+                        <span>
+                            Total Enrollments
+                        </span>
+
+                        <strong id="enrollmentCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <p>
+                        Total course enrollments
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div id="message"></div>
+
+    </main>
 
 </div>
+
 
 <script src="faculty-statistics.js"></script>
 

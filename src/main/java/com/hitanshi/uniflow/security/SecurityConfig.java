@@ -48,6 +48,9 @@ public class SecurityConfig {
                         .requestMatchers("/enrollments/course/**")
                         .hasRole("FACULTY")
 
+                        .requestMatchers("/enrollments/faculty/student-count")
+                        .hasRole("FACULTY")
+
                         .requestMatchers("/enrollments/**")
                         .hasRole("ADMIN")
 

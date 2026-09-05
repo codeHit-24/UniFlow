@@ -5,37 +5,136 @@
 
     <meta charset="UTF-8">
 
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>My Courses - UniFlow</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+          href="style.css">
 
 </head>
 
 <body>
 
-<nav class="navbar">
+<div class="dashboard-layout">
 
-    <h2>UniFlow</h2>
+    <!-- ================= SIDEBAR ================= -->
 
-    <button onclick="logout()">Logout</button>
+    <aside class="sidebar">
 
-</nav>
+        <div class="sidebar-logo">
+            Uni<span>Flow</span>
+        </div>
 
-<div class="container">
 
-    <h1>My Courses 📚</h1>
+        <nav class="sidebar-menu">
 
-    <div id="courseContainer">
+            <a href="student-dashboard.html">
 
-        <p>Courses will appear here.</p>
+                Dashboard
 
-    </div>
+            </a>
 
-    <button onclick="goBack()">
-        Back to Dashboard
-    </button>
+
+            <a href="profile.html">
+
+                My Profile
+
+            </a>
+
+
+            <a href="my-courses.html"
+               class="active">
+
+                My Courses
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <button onclick="logout()">
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="dashboard-main">
+
+
+        <!-- Top Bar -->
+
+        <div class="dashboard-topbar">
+
+            <div>
+
+                <h2>
+                    My Courses
+                </h2>
+
+                <p class="dashboard-subtitle">
+                    Courses you are currently enrolled in
+                </p>
+
+            </div>
+
+
+            <div class="user-info">
+
+                <span id="studentName">
+                    Student
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Page Heading -->
+
+        <div class="page-title">
+
+            <h1>
+                My Courses
+            </h1>
+
+            <p>
+                View the courses you are currently enrolled in.
+            </p>
+
+        </div>
+
+
+        <!-- Courses -->
+
+        <div id="courseContainer"
+             class="courses-grid">
+
+            <div class="loading-card">
+
+                <p>
+                    Loading courses...
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </main>
 
 </div>
+
 
 <script src="my-courses.js"></script>
 
