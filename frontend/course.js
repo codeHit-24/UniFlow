@@ -1,5 +1,5 @@
 const API_URL =
-    "http://localhost:8080/Courses";
+    "https://uniflow-backend-im5s.onrender.com/Courses";
 
 let selectedCourseId = null;
 

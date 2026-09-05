@@ -95,7 +95,7 @@ async function loadStudents() {
 
         const response = await fetch(
 
-            `http://localhost:8080/enrollments/course/${courseId}`,
+            `https://uniflow-backend-im5s.onrender.com/enrollments/course/${courseId}`,
 
             {
                 method: "GET",

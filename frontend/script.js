@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/Students";
+const API_URL = "https://uniflow-backend-im5s.onrender.com/Students";
 
 let selectedStudentId = null;
 let students = [];

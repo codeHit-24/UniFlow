@@ -1,8 +1,8 @@
 const COURSES_API =
-    "http://localhost:8080/Courses/me";
+    "https://uniflow-backend-im5s.onrender.com/Courses/me";
 
 const STUDENT_COUNT_API =
-    "http://localhost:8080/enrollments/faculty/student-count";
+    "https://uniflow-backend-im5s.onrender.com/enrollments/faculty/student-count";
 
 
 /* =====================================================

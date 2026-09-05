@@ -1,8 +1,8 @@
 const COURSES_API =
-    "http://localhost:8080/Courses/me";
+    "https://uniflow-backend-im5s.onrender.com/Courses/me";
 
 const STUDENTS_API =
-    "http://localhost:8080/enrollments/my-students";
+    "https://uniflow-backend-im5s.onrender.com/enrollments/my-students";
 
 const token = localStorage.getItem("token");
 const role = localStorage.getItem("role");

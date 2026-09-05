@@ -26,7 +26,7 @@ if (!token || role !== "STUDENT") {
    ========================================================= */
 
 const COURSES_API =
-    "http://localhost:8080/enrollments/me";
+   "https://uniflow-backend-im5s.onrender.com/enrollments/me";
 
 
 /* =========================================================
