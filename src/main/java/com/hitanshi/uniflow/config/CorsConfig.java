@@ -30,9 +30,14 @@ public class CorsConfig {
                 "OPTIONS"
         ));
 
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedHeaders(List.of(
+                "Authorization",
+                "Content-Type"
+        ));
 
-        configuration.setExposedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of(
+                "Authorization"
+        ));
 
         configuration.setAllowCredentials(true);
 

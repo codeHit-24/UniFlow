@@ -3098,5 +3098,623 @@ tr:hover {
     font-size: 13px;
 }
 
+/* =========================================================
+   FINAL MOBILE RESPONSIVE OVERRIDE
+   Keep this at the VERY END of the CSS file
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    /* ---------- GLOBAL ---------- */
+
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    * {
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+
+    /* ---------- APP LAYOUT ---------- */
+
+    .app-layout {
+        display: block;
+        width: 100%;
+        min-height: 100vh;
+    }
+
+
+    /* ---------- SIDEBAR ---------- */
+
+    .sidebar {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: auto !important;
+        height: auto !important;
+
+        margin: 0 !important;
+
+        padding: 18px 16px !important;
+
+        display: block !important;
+    }
+
+
+    .brand {
+        padding: 0 5px 18px !important;
+    }
+
+
+    .sidebar-user,
+    .sidebar-profile {
+        margin-bottom: 15px !important;
+    }
+
+
+    .sidebar-nav,
+    .sidebar-menu {
+        display: flex !important;
+
+        flex-direction: row !important;
+
+        flex-wrap: wrap !important;
+
+        gap: 6px !important;
+    }
+
+
+    .sidebar-link,
+    .sidebar-menu a,
+    .nav-item {
+        flex: 1 1 calc(50% - 6px);
+
+        width: auto !important;
+
+        min-width: 0;
+
+        margin: 0 !important;
+
+        padding: 11px 10px !important;
+
+        justify-content: center;
+
+        text-align: center;
+    }
+
+
+    .sidebar-bottom {
+        position: static !important;
+
+        margin-top: 15px;
+    }
+
+
+    .sidebar-footer {
+        display: none;
+    }
+
+
+    /* ---------- MAIN CONTENT ---------- */
+
+    .main-content {
+        width: 100% !important;
+
+        margin-left: 0 !important;
+
+        padding: 20px 16px !important;
+
+        min-height: auto;
+    }
+
+
+    /* ---------- OLD DASHBOARD SUPPORT ---------- */
+
+    .dashboard-layout {
+        width: 100% !important;
+
+        min-height: 100vh;
+
+        padding-left: 0 !important;
+    }
+
+
+    .dashboard-main {
+        width: 100% !important;
+
+        padding: 20px 16px !important;
+    }
+
+
+    /* ---------- NAVBAR ---------- */
+
+    .navbar {
+        width: 100%;
+
+        height: 60px;
+
+        padding: 0 15px !important;
+    }
+
+
+    .navbar h2 {
+        font-size: 20px;
+    }
+
+
+    .navbar button {
+        width: auto !important;
+
+        padding: 9px 14px !important;
+    }
+
+
+    /* ---------- ADMIN HEADER ---------- */
+
+    .admin-header {
+        width: 100%;
+
+        min-height: 60px;
+
+        padding: 12px 16px !important;
+    }
+
+
+    .admin-brand {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 2px;
+    }
+
+
+    .admin-brand h1 {
+        font-size: 21px;
+    }
+
+
+    /* ---------- CONTAINERS ---------- */
+
+    .container,
+    .admin-container {
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+        margin: 25px auto !important;
+
+        padding: 0 16px;
+    }
+
+
+    /* ---------- PAGE HEADER ---------- */
+
+    .page-header {
+        width: 100%;
+
+        margin-bottom: 25px;
+
+        text-align: center !important;
+    }
+
+
+    .page-header h1,
+    .page-header h2 {
+        font-size: 27px;
+
+        text-align: center;
+    }
+
+
+    .page-header p {
+        font-size: 14px;
+
+        text-align: center;
+    }
+
+
+    .page-header h1 {
+        word-break: normal;
+    }
+
+
+    /* ---------- DASHBOARD ---------- */
+
+    .dashboard {
+        grid-template-columns: 1fr !important;
+
+        gap: 16px;
+
+        width: 100%;
+
+        margin-top: 25px;
+    }
+
+
+    .dashboard-card {
+        width: 100%;
+
+        padding: 22px;
+    }
+
+
+    .dashboard-card h2 {
+        font-size: 34px;
+    }
+
+
+    /* ---------- SUMMARY ---------- */
+
+    .summary-grid,
+    .stats-container,
+    .statistics-grid {
+        grid-template-columns: 1fr !important;
+
+        width: 100%;
+
+        gap: 15px;
+    }
+
+
+    .summary-card,
+    .stat-card {
+        width: 100%;
+
+        padding: 20px;
+    }
+
+
+    /* ---------- STUDENT DASHBOARD ---------- */
+
+    .student-dashboard-cards {
+        grid-template-columns: 1fr !important;
+
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+        margin: 25px 0 !important;
+
+        gap: 15px;
+    }
+
+
+    .student-card {
+        width: 100%;
+
+        padding: 20px !important;
+
+        gap: 15px;
+
+        align-items: flex-start;
+    }
+
+
+    .student-card-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+
+    /* ---------- COURSES ---------- */
+
+    .courses-grid,
+    .students-grid,
+    .content-grid,
+    .quick-actions {
+        grid-template-columns: 1fr !important;
+
+        width: 100%;
+    }
+
+
+    .course-card,
+    .student-card,
+    .action-card,
+    .content-panel {
+        width: 100%;
+
+        min-width: 0;
+    }
+
+
+    /* ---------- WELCOME BANNER ---------- */
+
+    .welcome-banner {
+        width: 100%;
+
+        min-height: auto;
+
+        padding: 24px !important;
+
+        margin-bottom: 20px;
+    }
+
+
+    .welcome-banner h1 {
+        font-size: 25px;
+    }
+
+
+    .banner-decoration {
+        display: none !important;
+    }
+
+
+    /* ---------- TOP HEADER ---------- */
+
+    .top-header {
+        width: 100%;
+
+        min-height: 60px;
+
+        padding: 12px 15px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .header-user-info {
+        display: none;
+    }
+
+
+    .header-right {
+        gap: 8px;
+    }
+
+
+    /* ---------- SECTION HEADER ---------- */
+
+    .section-header {
+        width: 100%;
+
+        flex-direction: column !important;
+
+        align-items: stretch !important;
+
+        gap: 12px;
+
+        margin-bottom: 20px;
+    }
+
+
+    .section-header h2,
+    .section-header h3 {
+        font-size: 19px;
+    }
+
+
+    /* ---------- FORMS ---------- */
+
+    .form-container {
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+        padding: 20px !important;
+
+        margin: 20px auto;
+    }
+
+
+    .course-form,
+    .enrollment-form {
+        width: 100% !important;
+
+        max-width: 100% !important;
+
+        padding: 20px !important;
+    }
+
+
+    .student-form-grid,
+    .form-grid {
+        grid-template-columns: 1fr !important;
+
+        width: 100%;
+    }
+
+
+    .form-group,
+    .form-field {
+        width: 100%;
+
+        min-width: 0;
+    }
+
+
+    input,
+    select,
+    textarea {
+        width: 100% !important;
+
+        max-width: 100%;
+
+        font-size: 16px;
+
+        padding: 12px;
+    }
+
+
+    .form-actions {
+        flex-direction: column !important;
+
+        width: 100%;
+    }
+
+
+    .form-actions button,
+    .primary-action {
+        width: 100% !important;
+
+        min-width: 0;
+    }
+
+
+    /* ---------- SEARCH ---------- */
+
+    .student-search,
+    .course-student-search {
+        width: 100% !important;
+
+        max-width: 100% !important;
+    }
+
+
+    /* ---------- TABLE ---------- */
+
+    .table-container {
+        width: 100%;
+
+        max-width: 100%;
+
+        overflow-x: auto;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+    table {
+        min-width: 650px;
+    }
+
+
+    /* ---------- PROFILE ---------- */
+
+    .profile-card {
+        width: 100%;
+
+        padding: 22px;
+
+        margin: 20px auto;
+    }
+
+
+    .profile-row {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 5px;
+    }
+
+
+    /* ---------- ACTION BUTTONS ---------- */
+
+    .action-buttons {
+        flex-direction: column !important;
+
+        width: 100%;
+    }
+
+
+    .action-buttons button {
+        width: 100% !important;
+
+        min-width: 0;
+    }
+
+
+    /* ---------- OVERVIEW ---------- */
+
+    .overview-card {
+        flex-direction: column !important;
+
+        align-items: stretch;
+
+        padding: 20px;
+    }
+
+
+    .overview-divider {
+        width: 100%;
+
+        height: 1px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .main-content,
+    .dashboard-main {
+        padding: 16px 12px !important;
+    }
+
+
+    .container,
+    .admin-container {
+        padding: 0 12px;
+    }
+
+
+    .page-header h1,
+    .page-header h2 {
+        font-size: 24px;
+    }
+
+
+    .welcome-banner {
+        padding: 20px !important;
+    }
+
+
+    .welcome-banner h1 {
+        font-size: 23px;
+    }
+
+
+    .dashboard-card,
+    .summary-card,
+    .stat-card,
+    .student-card,
+    .course-card,
+    .action-card,
+    .content-panel {
+        padding: 18px !important;
+    }
+
+
+    .admin-nav {
+        width: 100%;
+
+        overflow-x: auto;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+    .admin-nav a {
+        flex-shrink: 0;
+
+        white-space: nowrap;
+    }
+
+
+    .sidebar-link,
+    .sidebar-menu a,
+    .nav-item {
+        flex: 1 1 100%;
+
+        justify-content: flex-start;
+
+        text-align: left;
+    }
+}
+
 
 
