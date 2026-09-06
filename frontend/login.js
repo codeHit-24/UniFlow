@@ -188,3 +188,19 @@ async function login() {
         message.classList.add("show");
     }
 }
+
+function togglePassword() {
+
+    const passwordInput = document.getElementById("password");
+    const toggleButton = document.querySelector(".toggle-password");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleButton.textContent = "🙈";
+        toggleButton.setAttribute("aria-label", "Hide password");
+    } else {
+        passwordInput.type = "password";
+        toggleButton.textContent = "👁️";
+        toggleButton.setAttribute("aria-label", "Show password");
+    }
+}

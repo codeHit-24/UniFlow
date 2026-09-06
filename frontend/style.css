@@ -3716,5 +3716,68 @@ tr:hover {
     }
 }
 
+@media (max-width: 768px) {
+
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        width: 100%;
+        box-sizing: border-box;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .stat-card,
+    .dashboard-card {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 45px;
+}
+
+.password-container .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+
+    margin: 0 !important;
+    padding: 4px !important;
+
+    border: none !important;
+    background: transparent !important;
+
+    color: #555;
+    font-size: 17px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.password-container .toggle-password:hover {
+    background: transparent !important;
+}
+
 
 

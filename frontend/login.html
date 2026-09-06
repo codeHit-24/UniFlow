@@ -28,11 +28,22 @@
             placeholder="Username"
     >
 
-    <input
-            id="password"
-            type="password"
-            placeholder="Password"
-    >
+    <div class="password-container">
+        <input
+                type="password"
+                id="password"
+                placeholder="Password"
+        >
+
+        <button
+                type="button"
+                class="toggle-password"
+                onclick="togglePassword()"
+                aria-label="Show password"
+        >
+            👁️
+        </button>
+    </div>
 
     <button
             type="button"
